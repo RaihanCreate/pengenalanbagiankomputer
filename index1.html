@@ -1,0 +1,832 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pengenalan Komputer - Anatomi Hardware PC</title>
+    <meta name="description" content="Media pembelajaran interaktif anatomi hardware PC" />
+    <meta property="og:title" content="Pengenalan Komputer - Anatomi Hardware PC" />
+    <meta property="og:description" content="Media pembelajaran interaktif anatomi hardware PC" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #000;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+
+      /* Container background */
+      .background {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        background: #000;
+      }
+
+      /* VIDEO */
+      #backgroundVideo {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 1;
+        transform: scale(1);
+        transition:
+          opacity 2.5s ease-in-out,
+          transform 3s ease-in-out;
+        z-index: 1;
+        cursor: pointer;
+      }
+
+      /* FOTO */
+      #backgroundImage {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transform: scale(1.05);
+        transition:
+          opacity 2.5s ease-in-out,
+          transform 4s ease-out;
+        z-index: 2;
+      }
+
+      /* Saat foto muncul */
+      #backgroundImage.show {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      /* Saat video menghilang */
+      #backgroundVideo.hide {
+        opacity: 0;
+        transform: scale(1.03);
+        pointer-events: none;
+      }
+
+      /* Overlay */
+      .overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.35);
+        z-index: 3;
+        pointer-events: none;
+      }
+
+      /* Container Hotspot untuk Komponen PC */
+      .hotspot-container {
+        position: absolute;
+        inset: 0;
+        z-index: 4;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 1s ease-in-out 1s;
+      }
+
+      .hotspot-container.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      /* Titik Hotspot */
+      .hotspot {
+        position: absolute;
+        width: 26px;
+        height: 26px;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+        z-index: 5;
+        outline: none;
+      }
+
+      /* Lingkaran berdenyut */
+      .hotspot::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: rgba(0, 255, 204, 0.6);
+        animation: pulse 2s infinite;
+      }
+
+      .hotspot::after {
+        content: "";
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #00ffcc;
+        box-shadow: 0 0 10px #00ffcc;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+      }
+
+      .hotspot:hover::after,
+      .hotspot.active::after {
+        transform: scale(1.25);
+        background: #ffffff;
+        box-shadow: 0 0 16px #00ffcc, 0 0 4px #ffffff;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(0.95);
+          box-shadow: 0 0 0 0 rgba(0, 255, 204, 0.7);
+        }
+        70% {
+          transform: scale(1.85);
+          box-shadow: 0 0 0 12px rgba(0, 255, 204, 0);
+        }
+        100% {
+          transform: scale(0.95);
+          box-shadow: 0 0 0 0 rgba(0, 255, 204, 0);
+        }
+      }
+
+      /* Tooltip Nama dan Penjelasan Komponen */
+      .tooltip {
+        position: absolute;
+        bottom: 140%;
+        left: 50%;
+        transform: translateX(-50%) translateY(8px);
+        background: rgba(10, 16, 26, 0.95);
+        color: #ffffff;
+        padding: 12px 14px;
+        width: 270px;
+        max-width: min(290px, 85vw);
+        border-radius: 8px;
+        border: 1px solid #00ffcc;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7), 0 0 16px rgba(0, 255, 204, 0.25);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+        pointer-events: none;
+        backdrop-filter: blur(8px);
+        text-align: left;
+        z-index: 10;
+      }
+
+      .tooltip-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 7px;
+        border-bottom: 1px solid rgba(0, 255, 204, 0.25);
+        padding-bottom: 6px;
+      }
+
+      .tooltip-thumb {
+        width: 34px;
+        height: 34px;
+        object-fit: contain;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(0, 255, 204, 0.3);
+        border-radius: 5px;
+        padding: 2px;
+        flex-shrink: 0;
+      }
+
+      .tooltip-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #00ffcc;
+        line-height: 1.25;
+      }
+
+      .tooltip-desc {
+        font-size: 12px;
+        font-weight: 400;
+        color: #e2e8f0;
+        line-height: 1.45;
+      }
+
+      /* Muncul saat di-hover atau aktif */
+      .hotspot:hover .tooltip,
+      .hotspot:focus .tooltip,
+      .hotspot.active .tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      /* Edge positioning alignments */
+      .hs-align-left .tooltip {
+        left: 0;
+        transform: translateX(0) translateY(8px);
+      }
+      .hs-align-left:hover .tooltip,
+      .hs-align-left:focus .tooltip,
+      .hs-align-left.active .tooltip {
+        transform: translateX(0) translateY(0);
+      }
+
+      .hs-align-right .tooltip {
+        left: auto;
+        right: 0;
+        transform: translateX(0) translateY(8px);
+      }
+      .hs-align-right:hover .tooltip,
+      .hs-align-right:focus .tooltip,
+      .hs-align-right.active .tooltip {
+        transform: translateX(0) translateY(0);
+      }
+
+      /* Konten Teks Utama & Info Card */
+      .content {
+        position: relative;
+        z-index: 6;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
+        color: white;
+        text-align: center;
+        padding: 24px 20px;
+        pointer-events: none;
+      }
+
+      .header-text {
+        pointer-events: auto;
+      }
+
+      h1 {
+        font-size: 42px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        margin-bottom: 6px;
+        text-shadow: 0 3px 15px rgba(0, 0, 0, 0.8);
+      }
+
+      .header-subtitle {
+        font-size: 16px;
+        color: #e2e8f0;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+      }
+
+      /* Panel Info Komponen di Bawah Layar */
+      .bottom-info-wrapper {
+        pointer-events: auto;
+        width: 100%;
+        max-width: 680px;
+        margin-bottom: 12px;
+      }
+
+      .info-card {
+        background: rgba(10, 16, 26, 0.88);
+        border: 1px solid rgba(0, 255, 204, 0.45);
+        border-radius: 10px;
+        padding: 12px 18px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 16px rgba(0, 255, 204, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        text-align: left;
+        transition: border-color 0.25s ease, box-shadow 0.25s ease;
+      }
+
+      .info-card.highlight {
+        border-color: #00ffcc;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 0 0 24px rgba(0, 255, 204, 0.35);
+      }
+
+      .info-card-media {
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(0, 255, 204, 0.35);
+        padding: 4px;
+        object-fit: contain;
+        flex-shrink: 0;
+      }
+
+      .info-card-text {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .info-card-badge {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #00ffcc;
+        font-weight: 700;
+        margin-bottom: 2px;
+      }
+
+      .info-card-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 3px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .info-card-desc {
+        font-size: 13px;
+        color: #cbd5e1;
+        line-height: 1.4;
+      }
+
+      /* Tombol skip intro jika ingin langsung ke anatomi */
+      .skip-button {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        z-index: 10;
+        background: rgba(10, 16, 26, 0.8);
+        color: #00ffcc;
+        border: 1px solid #00ffcc;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        backdrop-filter: blur(8px);
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .skip-button:hover {
+        background: #00ffcc;
+        color: #000;
+        box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+      }
+
+      .skip-button.hidden {
+        display: none;
+      }
+
+      /* Posisi Koordinat Hotspot */
+      .hs-side-panel {
+        top: 41%;
+        left: 6%;
+      }
+      .hs-case-fan {
+        top: 31%;
+        left: 11%;
+      }
+      .hs-cooler {
+        top: 33%;
+        left: 19%;
+      }
+      .hs-cpu {
+        top: 36%;
+        left: 25%;
+      }
+      .hs-ram {
+        top: 34%;
+        left: 27%;
+      }
+      .hs-nvme {
+        top: 49%;
+        left: 21%;
+      }
+      .hs-gpu {
+        top: 41%;
+        left: 32%;
+      }
+      .hs-pcie-cards {
+        top: 58%;
+        left: 20%;
+      }
+      .hs-casing {
+        top: 45%;
+        left: 46%;
+      }
+      .hs-mobo {
+        top: 45%;
+        left: 61%;
+      }
+      .hs-cable {
+        top: 36%;
+        left: 70%;
+      }
+      .hs-psu {
+        top: 36%;
+        left: 77%;
+      }
+      .hs-ssd-bracket {
+        top: 48%;
+        left: 78%;
+      }
+      .hs-frontcover {
+        top: 45%;
+        left: 88%;
+      }
+      .hs-back-panel {
+        top: 45%;
+        left: 93%;
+      }
+
+      /* Mobile Adjustment */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 26px;
+        }
+        .header-subtitle {
+          font-size: 13px;
+        }
+        .hotspot {
+          width: 22px;
+          height: 22px;
+        }
+        .tooltip {
+          width: 220px;
+          padding: 10px 12px;
+        }
+        .tooltip-title {
+          font-size: 13px;
+        }
+        .tooltip-desc {
+          font-size: 11px;
+        }
+        .info-card {
+          padding: 10px 14px;
+          gap: 12px;
+        }
+        .info-card-media {
+          width: 40px;
+          height: 40px;
+        }
+        .info-card-title {
+          font-size: 14px;
+        }
+        .info-card-desc {
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Tombol Lewati Video -->
+    <button id="skipIntroBtn" class="skip-button" type="button" title="Lewati video intro ke diagram anatomi">
+      Lewati Video &rarr;
+    </button>
+
+    <div id="mainBackground1" class="background">
+      <!-- VIDEO -->
+      <video id="backgroundVideo" autoplay muted playsinline>
+        <source src="vidtugas.mp4" type="video/mp4" />
+        Browser tidak mendukung video.
+      </video>
+
+      <!-- FOTO -->
+      <img id="backgroundImage" src="foto.png" alt="Hardware PC Diagram" />
+
+      <!-- HOTSPOTS KOMPONEN PC -->
+      <div id="hotspotContainer" class="hotspot-container">
+        <!-- Side Panel -->
+        <div id="hs-side-panel" class="hotspot hs-side-panel hs-align-left" tabindex="0" role="button" aria-label="Tempered Glass / Side Panel"
+          data-title="Tempered Glass / Side Panel"
+          data-desc="Panel samping kaca transparan yang melindungi komponen internal sekaligus menampilkan keindahan hardware PC."
+          data-img="">
+          <div class="tooltip">
+            <div class="tooltip-header">
+              <div class="tooltip-title">Tempered Glass / Side Panel</div>
+            </div>
+            <div class="tooltip-desc">Panel samping kaca transparan yang melindungi komponen internal sekaligus menampilkan keindahan hardware PC.</div>
+          </div>
+        </div>
+
+        <!-- Case Fan -->
+        <div id="hs-case-fan" class="hotspot hs-case-fan hs-align-left" tabindex="0" role="button" aria-label="Case Fan"
+          data-title="Case Fan"
+          data-desc="Kipas sirkulasi casing untuk meniup udara dingin ke dalam (intake) dan membuang udara panas keluar (exhaust)."
+          data-img="van.png">
+          <div class="tooltip">
+            <div class="tooltip-header">
+              <img class="tooltip-thumb" src="van.png" alt="Case Fan" />
+              <div class="tooltip-title">Case Fan</div>
+            </div>
+            <div class="tooltip-desc">Kipas sirkulasi casing untuk meniup udara dingin ke dalam (intake) dan membuang udara panas keluar (exhaust).</div>
+          </div>
+        </div>
+
+        <!-- CPU Air Cooler -->
+        <div id="hs-cooler" class="hotspot hs-cooler" tabindex="0" role="button" aria-label="CPU Air Cooler"
+          data-title="CPU Air Cooler"
+          data-desc="Pendingin dengan pipa tembaga (heatpipes) dan kipas yang menyerap serta membuang panas dari prosesor secara efisien."
+          data-img="van.png">
+          <div class="tooltip">
+            <div class="tooltip-header">
+              <img class="tooltip-thumb" src="van.png" alt="CPU Air Cooler" />
+              <div class="tooltip-title">CPU Air Cooler</div>
+            </div>
+            <div class="tooltip-desc">Pendingin dengan pipa tembaga (heatpipes) dan kipas yang menyerap serta membuang panas dari prosesor secara efisien.</div>
+          </div>
+        </div>
+
+        <!-- Sleeved Cable -->
+        <div id="hs-cable" class="hotspot hs-cable" tabindex="0" role="button" aria-label="Sleeved Cable"
+          data-title="Sleeved Cable"
+          data-desc="Kabel daya berpelindung anyaman rapi untuk suplai arus listrik yang aman, rapi, dan estetis di dalam casing."
+          data-img="">
+          <div class="tooltip">
+            <div class="tooltip-header">
+              <div class="tooltip-title">Sleeved Cable</div>
+            </div>
+            <div class="tooltip-desc">Kabel daya berpelindung anyaman rapi untuk suplai arus listrik yang aman, rapi, dan estetis di dalam casing.</div>
+          </div>
+        </div>
+
+        <!-- Processor (CPU) -->
+        <div id="hs-cpu" class="hotspot hs-cpu" tabindex="0" role="button" aria-label="Processor (CPU)"
+          data-title="Processor (CPU)"
+          data-desc="Otak utama komputer yang mengendalikan seluruh sistem dan mengeksekusi semua instruksi komputasi secara presisi."
+          data-img="cpu.png">
+          <div class="tooltip">
+            <div class="tooltip-header">
+              <img class="tooltip-thumb" src="cpu.png" alt="CPU" />
+              <div class="tooltip-title">Processor (CPU)</div>
+            </div>
+            <div class="tooltip-desc">Otak utama komputer yang mengendalikan seluruh sistem dan mengeksekusi semua instruksi komputasi secara presisi.</div>
+          </div>
+        </div>
+
+        <!-- RAM Memory -->
+        <div id="hs-ram" class="hotspot hs-ram" tabindex="0" role="button" aria-label="RAM Memory"
+          data-title="RAM Memory"
+          data-desc="Memori akses acak berkecepatan tinggi yang menyimpan data aktif sementara agar dapat diproses kilat oleh prosesor."
+          data-img="ram.png">
+          <div class="tooltip">
+            <div class="tooltip-header">
+              <img class="tooltip-thumb" src="ram.png" alt="RAM" />
+              <div class="tooltip-title">RAM Memory</div>
+            </div>
+            <div class="tooltip-desc">Memori akses acak berkecepatan tinggi yang menyimpan data aktif sementara agar dapat diproses kilat oleh prosesor.</div>
+          </div>
+        </div>
+
+        <!-- M.2 NVMe SSD -->
+        <div id="hs-nvme" class="hotspot hs-nvme" tabindex="0" role="button" aria-label="M.2 NVMe SSD"
+          data-title="M.2 NVMe SSD"
+          data-desc="Media penyimpanan generasi modern berkecepatan ultra tinggi untuk booting sistem operasi dan pemuatan file super cepat."
+          data-img="memory card.png">
+          <div class="tooltip">
+            <div class="tooltip-header">
+              <img class="tooltip-thumb" src="memory card.png" alt="SSD" />
+              <div class="tooltip-title">M.2 NVMe SSD</div>
+            </div>
+            <div class="tooltip-desc">Media penyimpanan generasi modern berkecepatan ultra tinggi untuk booting sistem operasi dan pemuatan file super cepat.</div>
+          </div>
+        </div>
+
+        <!-- Graphics Card (GPU) -->
+        <div id="hs-gpu" class="hotspot hs-gpu" tabindex="0" role="button" aria-label="Graphics Card (GPU)"
+          data-title="Graphics Card (GPU)"
+          data-desc="Kartu grafis khusus pengolah visual, grafis 3D, rendering video, dan akselerasi komputasi visual ke monitor."
+          data-img="">
+          <div class="tooltip">
+            <div class="tooltip-header">
+              <div class="tooltip-title">Graphics Card (GPU)</div>
+            </div>
+            <div class="tooltip-desc">Kartu grafis khusus pengolah visual, grafis 3D, rendering video, dan akselerasi komputasi visual ke monitor.</div>
+          </div>
+        </div>
+
+        <!-- Expansion Cards / LAN -->
+        <div id="hs-pcie-cards" class="hotspot hs-pcie-cards" tabindex="0" role="button" aria-label="Expansion Cards / LAN"
+          data-title="Expansion Cards / LAN"
+          data-desc="Kartu ekspansi tambahan pada slot PCIe (seperti Network LAN Card atau Sound Card) guna memperluas konektivitas PC."
+          data-img="network card.png">
+          <div class="tooltip">
+            <div class="tooltip-header">
+              <img class="tooltip-thumb" src="network card.png" alt="Network Card" />
+              <div class="tooltip-title">Expansion Cards / LAN</div>
+            </div>
+            <div class="tooltip-desc">Kartu ekspansi tambahan pada slot PCIe (seperti Network LAN Card atau Sound Card) guna memperluas konektivitas PC.</div>
+          </div>
+        </div>
+
+        <!-- PC Case / Chassis -->
+        <div id="hs-casing" class="hotspot hs-casing" tabindex="0" role="button" aria-label="PC Case / Chassis"
+          data-title="PC Case / Chassis"
+          data-desc="Rangka utama penopang seluruh hardware komputer yang menjaga posisi komponen tetap aman serta mengatur arah aliran udara."
+          data-img="">
+          <div class="tooltip">
+            <div class="tooltip-header">
+              <div class="tooltip-title">PC Case / Chassis</div>
+            </div>
+            <div class="tooltip-desc">Rangka utama penopang seluruh hardware komputer yang menjaga posisi komponen tetap aman serta mengatur arah aliran udara.</div>
+          </div>
+        </div>
+
+        <!-- Motherboard -->
+        <div id="hs-mobo" class="hotspot hs-mobo" tabindex="0" role="button" aria-label="Motherboard"
+          data-title="Motherboard"
+          data-desc="Papan sirkuit induk yang menghubungkan CPU, memori, kartu grafis, dan seluruh perangkat keras dalam satu sistem terpadu."
+          data-img="mobo.png">
+          <div class="tooltip">
+            <div class="tooltip-header">
+              <img class="tooltip-thumb" src="mobo.png" alt="Motherboard" />
+              <div class="tooltip-title">Motherboard</div>
+            </div>
+            <div class="tooltip-desc">Papan sirkuit induk yang menghubungkan CPU, memori, kartu grafis, dan seluruh perangkat keras dalam satu sistem terpadu.</div>
+          </div>
+        </div>
+
+        <!-- Power Supply (PSU) -->
+        <div id="hs-psu" class="hotspot hs-psu" tabindex="0" role="button" aria-label="Power Supply (PSU)"
+          data-title="Power Supply (PSU)"
+          data-desc="Penyuplai daya listrik yang mengubah arus AC tegangan tinggi PLN menjadi arus DC bertegangan stabil untuk tiap komponen."
+          data-img="power suplay.png">
+          <div class="tooltip">
+            <div class="tooltip-header">
+              <img class="tooltip-thumb" src="power suplay.png" alt="PSU" />
+              <div class="tooltip-title">Power Supply (PSU)</div>
+            </div>
+            <div class="tooltip-desc">Penyuplai daya listrik yang mengubah arus AC tegangan tinggi PLN menjadi arus DC bertegangan stabil untuk tiap komponen.</div>
+          </div>
+        </div>
+
+        <!-- Storage Bracket / Bay -->
+        <div id="hs-ssd-bracket" class="hotspot hs-ssd-bracket" tabindex="0" role="button" aria-label="Storage Bracket / Bay"
+          data-title="Storage Bracket / Bay"
+          data-desc="Dudukan khusus untuk mengunci dan memasang drive penyimpanan tambahan seperti hard drive (HDD) atau SSD 2.5 inci."
+          data-img="">
+          <div class="tooltip">
+            <div class="tooltip-header">
+              <div class="tooltip-title">Storage Bracket / Bay</div>
+            </div>
+            <div class="tooltip-desc">Dudukan khusus untuk mengunci dan memasang drive penyimpanan tambahan seperti hard drive (HDD) atau SSD 2.5 inci.</div>
+          </div>
+        </div>
+
+        <!-- Front Cover / Bezel -->
+        <div id="hs-frontcover" class="hotspot hs-frontcover hs-align-right" tabindex="0" role="button" aria-label="Front Cover / Bezel"
+          data-title="Front Cover / Bezel"
+          data-desc="Bagian muka casing tempat udara segar masuk (mesh intake) serta pelindung filter debu depan."
+          data-img="">
+          <div class="tooltip">
+            <div class="tooltip-header">
+              <div class="tooltip-title">Front Cover / Bezel</div>
+            </div>
+            <div class="tooltip-desc">Bagian muka casing tempat udara segar masuk (mesh intake) serta pelindung filter debu depan.</div>
+          </div>
+        </div>
+
+        <!-- Back Panel / Chassis Frame -->
+        <div id="hs-back-panel" class="hotspot hs-back-panel hs-align-right" tabindex="0" role="button" aria-label="Back Panel / Chassis Frame"
+          data-title="Back Panel / Chassis Frame"
+          data-desc="Panel belakang sasis tempat port I/O motherboard terhubung ke monitor, keyboard, mouse, serta ventilasi pembuangan panas."
+          data-img="">
+          <div class="tooltip">
+            <div class="tooltip-header">
+              <div class="tooltip-title">Back Panel / Chassis Frame</div>
+            </div>
+            <div class="tooltip-desc">Panel belakang sasis tempat port I/O motherboard terhubung ke monitor, keyboard, mouse, serta ventilasi pembuangan panas.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overlay -->
+      <div id="mainOverlay1" class="overlay"></div>
+    </div>
+
+    <!-- KONTEN -->
+    <div id="mainContent1" class="content">
+      <div id="headerContainer1" class="header-text">
+        <h1 id="titleHeader1">Anatomi Hardware PC</h1>
+        <p id="descHeader1" class="header-subtitle">Arahkan kursor atau pilih titik komponen untuk membaca penjelasan singkatnya</p>
+      </div>
+
+      <!-- Panel Info Komponen di Bawah Layar -->
+      <div class="bottom-info-wrapper">
+        <div id="infoCard1" class="info-card">
+          <img id="infoCardMedia1" class="info-card-media" src="cpu.png" alt="Komponen" />
+          <div class="info-card-text">
+            <div class="info-card-badge">Detail Komponen</div>
+            <div id="infoCardTitle1" class="info-card-title">Arahkan ke Titik Komponen</div>
+            <div id="infoCardDesc1" class="info-card-desc">Sorot atau klik penanda biru toska pada gambar PC untuk melihat nama, gambar, dan fungsi penjelasannya.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const video = document.getElementById("backgroundVideo");
+      const image = document.getElementById("backgroundImage");
+      const hotspotContainer = document.getElementById("hotspotContainer");
+      const skipIntroBtn = document.getElementById("skipIntroBtn");
+
+      const infoCard = document.getElementById("infoCard1");
+      const infoCardTitle = document.getElementById("infoCardTitle1");
+      const infoCardDesc = document.getElementById("infoCardDesc1");
+      const infoCardMedia = document.getElementById("infoCardMedia1");
+
+      let transitioned = false;
+      function transitionToHotspots() {
+        if (transitioned) return;
+        transitioned = true;
+        if (skipIntroBtn) skipIntroBtn.classList.add("hidden");
+
+        image.classList.add("show");
+        video.classList.add("hide");
+
+        setTimeout(() => {
+          hotspotContainer.classList.add("show");
+        }, 1200);
+      }
+
+      video.addEventListener("ended", transitionToHotspots);
+      if (skipIntroBtn) {
+        skipIntroBtn.addEventListener("click", transitionToHotspots);
+      }
+
+      video.addEventListener("click", transitionToHotspots);
+      window.addEventListener("keydown", (e) => {
+        if (e.code === "Space" || e.code === "Enter") {
+          transitionToHotspots();
+        }
+      });
+      video.addEventListener("error", transitionToHotspots);
+
+      // Interaktivitas Hotspot & Penjelasan Singkat
+      const hotspots = document.querySelectorAll(".hotspot");
+
+      function updateActiveComponent(hotspot) {
+        const title = hotspot.dataset.title;
+        const desc = hotspot.dataset.desc;
+        const img = hotspot.dataset.img;
+
+        infoCardTitle.textContent = title;
+        infoCardDesc.textContent = desc;
+
+        if (img) {
+          infoCardMedia.src = img;
+          infoCardMedia.style.display = "block";
+        } else {
+          infoCardMedia.style.display = "none";
+        }
+
+        infoCard.classList.add("highlight");
+      }
+
+      function resetComponent() {
+        const activeHotspot = document.querySelector(".hotspot.active");
+        if (activeHotspot) {
+          updateActiveComponent(activeHotspot);
+        } else {
+          infoCard.classList.remove("highlight");
+          infoCardTitle.textContent = "Arahkan ke Titik Komponen";
+          infoCardDesc.textContent = "Sorot atau klik penanda biru toska pada gambar PC untuk melihat nama, gambar, dan fungsi penjelasannya.";
+          infoCardMedia.src = "cpu.png";
+          infoCardMedia.style.display = "block";
+        }
+      }
+
+      hotspots.forEach((hs) => {
+        hs.addEventListener("mouseenter", () => {
+          updateActiveComponent(hs);
+        });
+
+        hs.addEventListener("mouseleave", () => {
+          resetComponent();
+        });
+
+        hs.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const wasActive = hs.classList.contains("active");
+          hotspots.forEach(h => h.classList.remove("active"));
+          if (!wasActive) {
+            hs.classList.add("active");
+            updateActiveComponent(hs);
+          } else {
+            resetComponent();
+          }
+        });
+
+        hs.addEventListener("focus", () => {
+          updateActiveComponent(hs);
+        });
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".hotspot")) {
+          hotspots.forEach(h => h.classList.remove("active"));
+          resetComponent();
+        }
+      });
+    </script>
+  </body>
+</html>
