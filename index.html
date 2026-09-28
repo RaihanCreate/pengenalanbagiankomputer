@@ -639,6 +639,222 @@
         box-shadow: 0 0 12px rgba(251, 191, 36, 0.25);
       }
 
+      /* Sequential Disassembly Animation Bar */
+      .psu-anim-bar {
+        background: rgba(13, 20, 33, 0.85);
+        border-bottom: 1px solid rgba(0, 255, 204, 0.25);
+        padding: 8px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        z-index: 12;
+        backdrop-filter: blur(12px);
+      }
+
+      .anim-controls-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-anim-play {
+        background: linear-gradient(135deg, #00ffcc 0%, #00b4d8 100%);
+        color: #030712;
+        border: none;
+        padding: 6px 14px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 800;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 0 14px rgba(0, 255, 204, 0.4);
+        transition: all 0.2s ease;
+      }
+
+      .btn-anim-play:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 0 20px rgba(0, 255, 204, 0.6);
+      }
+
+      .btn-anim-play.playing {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        box-shadow: 0 0 16px rgba(245, 158, 11, 0.5);
+      }
+
+      .btn-anim-secondary {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #e2e8f0;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 11.5px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.2s ease;
+      }
+
+      .btn-anim-secondary:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: #00ffcc;
+        color: #00ffcc;
+      }
+
+      /* Stepper Pipeline */
+      .anim-stepper-track {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(7, 11, 18, 0.7);
+        padding: 3px 6px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        overflow-x: auto;
+      }
+
+      .step-node-btn {
+        background: transparent;
+        border: none;
+        color: #94a3b8;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 11.5px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.18s ease;
+        white-space: nowrap;
+      }
+
+      .step-node-btn .step-num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 17px;
+        height: 17px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      .step-node-btn:hover {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .step-node-btn.active {
+        background: rgba(0, 255, 204, 0.18);
+        color: #00ffcc;
+        font-weight: 700;
+        box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+      }
+
+      .step-node-btn.active .step-num {
+        background: #00ffcc;
+        color: #040810;
+      }
+
+      .anim-speed-group {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 11px;
+        color: #64748b;
+      }
+
+      .speed-btn {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #94a3b8;
+        padding: 3px 7px;
+        border-radius: 5px;
+        font-size: 11px;
+        cursor: pointer;
+        font-weight: 700;
+        transition: all 0.15s ease;
+      }
+
+      .speed-btn.active {
+        background: #fbbf24;
+        color: #030712;
+        border-color: #fbbf24;
+      }
+
+      /* Real-time Floating HUD Narration Overlay */
+      .psu-anim-hud {
+        position: absolute;
+        top: 14px;
+        left: 16px;
+        max-width: 440px;
+        background: rgba(7, 11, 18, 0.9);
+        border: 1px solid rgba(0, 255, 204, 0.4);
+        border-radius: 10px;
+        padding: 10px 14px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+        z-index: 25;
+        pointer-events: auto;
+        transition: all 0.3s ease;
+      }
+
+      .hud-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 4px;
+      }
+
+      .hud-step-badge {
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: #00ffcc;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .hud-step-badge.gold {
+        color: #fbbf24;
+      }
+
+      .hud-step-bar-wrap {
+        width: 80px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+
+      .hud-step-bar-fill {
+        height: 100%;
+        background: #00ffcc;
+        width: 20%;
+        transition: width 0.4s ease;
+      }
+
+      .hud-title {
+        font-size: 13.5px;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 3px;
+      }
+
+      .hud-desc {
+        font-size: 11.5px;
+        color: #cbd5e1;
+        line-height: 1.4;
+      }
+
       /* Stages Filter Strip */
       .psu-filter-strip {
         padding: 8px 20px;
@@ -1329,6 +1545,46 @@
           </div>
         </div>
 
+        <!-- Sequential Disassembly Animation Bar -->
+        <div class="psu-anim-bar">
+          <div class="anim-controls-left">
+            <button id="btnPlayDisassembly" class="btn-anim-play" type="button" title="Putar animasi pembongkaran PSU dari utuh ke terurai secara berurutan">
+              <span id="animPlayIcon">▶</span>
+              <span id="animPlayText">Putar Animasi Bongkar</span>
+            </button>
+            <button id="btnReassemble" class="btn-anim-secondary" type="button" title="Rakit kembali PSU dari posisi terurai ke utuh">
+              ⏮ Rakit Kembali
+            </button>
+          </div>
+
+          <!-- Stepper Track -->
+          <div class="anim-stepper-track" role="tablist" aria-label="Langkah Pembongkaran Berurutan">
+            <button id="stepNode0" class="step-node-btn" type="button" data-step="0" title="Tahap 0: PSU Utuh Tertutup">
+              <span class="step-num">0</span> Utuh
+            </button>
+            <button id="stepNode1" class="step-node-btn" type="button" data-step="1" title="Tahap 1: Lepas Baut & Tutup Atas">
+              <span class="step-num">1</span> Tutup & Kipas
+            </button>
+            <button id="stepNode2" class="step-node-btn" type="button" data-step="2" title="Tahap 2: Angkat Heatsink Pendingin">
+              <span class="step-num">2</span> Heatsink
+            </button>
+            <button id="stepNode3" class="step-node-btn active" type="button" data-step="3" title="Tahap 3: Terurai Penuh (Exploded View)">
+              <span class="step-num">3</span> Terurai 3D
+            </button>
+            <button id="stepNode4" class="step-node-btn" type="button" data-step="4" title="Tahap 4: Sirkuit Internal PCB">
+              <span class="step-num">4</span> Sirkuit PCB
+            </button>
+          </div>
+
+          <!-- Speed Controls -->
+          <div class="anim-speed-group">
+            <span>Kecepatan:</span>
+            <button class="speed-btn" type="button" data-speed="0.5">0.5x</button>
+            <button class="speed-btn active" type="button" data-speed="1.0">1x</button>
+            <button class="speed-btn" type="button" data-speed="2.0">2x</button>
+          </div>
+        </div>
+
         <!-- Filter Komponen Berdasarkan Tahap Aliran Listrik -->
         <div class="psu-filter-strip">
           <span class="filter-label">Filter Tahap:</span>
@@ -1344,14 +1600,36 @@
           <div class="blueprint-grid"></div>
 
           <div class="viewport-frame">
-            <!-- LAYER 1: Tampilan Real Assembled PSU -->
-            <img id="imgPsuReal" class="psu-visual-layer" src="psu_assembled.jpg" alt="Tampilan Real Rakitan PSU PC" />
+            <!-- Real-time Disassembly HUD Narration Overlay -->
+            <div id="psuAnimHud" class="psu-anim-hud">
+              <div class="hud-header">
+                <span id="hudStepBadge" class="hud-step-badge gold">
+                  ⚡ TAHAP 4/5: TERURAI PENUH
+                </span>
+                <div class="hud-step-bar-wrap">
+                  <div id="hudStepBarFill" class="hud-step-bar-fill" style="width: 80%;"></div>
+                </div>
+              </div>
+              <div id="hudTitle" class="hud-title">Pembongkaran Terurai 3D (Exploded View)</div>
+              <div id="hudDesc" class="hud-desc">
+                Seluruh modul internal terurai di udara: transformator, kapasitor 450V, modul DC-DC, dan soket modular melayang teratur untuk dipelajari.
+              </div>
+            </div>
 
-            <!-- LAYER 2: Tampilan Terurai / Exploded Disassembled PSU -->
-            <img id="imgPsuExploded" class="psu-visual-layer active" src="psu_exploded.jpg" alt="Tampilan Visual Dibongkar / Exploded View PSU" />
+            <!-- LAYER 0: Tampilan Real Assembled PSU (Utuh) -->
+            <img id="imgPsuReal" class="psu-visual-layer" src="psu_assembled.jpg" alt="Tahap 0: PSU Utuh Rakitan Tertutup" />
 
-            <!-- LAYER 3: Tampilan Sirkuit Internal PCB Top-Down -->
-            <img id="imgPsuInternal" class="psu-visual-layer" src="psu_internal.jpg" alt="Tampilan Sirkuit Internal PCB Komponen PSU" />
+            <!-- LAYER 1: Tampilan Pembongkaran Tahap 1 (Tutup Atas & Kipas Terbuka) -->
+            <img id="imgPsuStep1" class="psu-visual-layer" src="psu_step1.jpg" alt="Tahap 1: Tutup Atas & Kipas Terbuka" />
+
+            <!-- LAYER 2: Tampilan Pembongkaran Tahap 2 (Heatsink Terangkat) -->
+            <img id="imgPsuStep2" class="psu-visual-layer" src="psu_step2.jpg" alt="Tahap 2: Heatsink Pendingin Terlepas" />
+
+            <!-- LAYER 3: Tampilan Terurai / Exploded Disassembled PSU -->
+            <img id="imgPsuExploded" class="psu-visual-layer active" src="psu_exploded.jpg" alt="Tahap 3: Visual Dibongkar / Exploded View PSU" />
+
+            <!-- LAYER 4: Tampilan Sirkuit Internal PCB Top-Down -->
+            <img id="imgPsuInternal" class="psu-visual-layer" src="psu_internal.jpg" alt="Tahap 4: Sirkuit Internal PCB Komponen PSU" />
 
             <!-- ============================================== -->
             <!-- HOTSPOTS: EXPLODED VIEW (TAMPILAN DIBONGKAR)    -->
@@ -1559,11 +1837,12 @@
           </div>
         </div>
 
-        <!-- Slider Bar Pembongkaran Aksis -->
+        <!-- Slider Bar Pembongkaran Aksis (0 s/d 4) -->
         <div class="psu-slider-strip">
-          <span class="slider-caption">📦 Rakit Utuh</span>
-          <input id="psuExplosionSlider" class="disassembly-range" type="range" min="0" max="2" value="1" step="1" title="Geser untuk mengubah tingkat pembongkaran visual PSU" />
-          <span class="slider-caption">💥 Visual Dibongkar / Terurai</span>
+          <span class="slider-caption">📦 0: Utuh</span>
+          <input id="psuExplosionSlider" class="disassembly-range" type="range" min="0" max="4" value="3" step="1" title="Geser tuas untuk membongkar atau merakit PSU secara berurutan" />
+          <span class="slider-caption">💥 3: Terurai</span>
+          <span class="slider-caption">🔬 4: PCB</span>
         </div>
 
         <!-- PSU Bottom Inspector Panel -->
@@ -1656,6 +1935,30 @@
         playTone(440, 'sine', 0.06, 0.1);
         setTimeout(() => playTone(880, 'sine', 0.1, 0.12), 60);
       }
+      function playScrewSound() {
+        // Obeng membuka baut
+        playTone(320, 'sawtooth', 0.05, 0.1);
+        setTimeout(() => playTone(520, 'sawtooth', 0.04, 0.08), 50);
+        setTimeout(() => playTone(780, 'sine', 0.06, 0.12), 110);
+      }
+      function playLiftSound() {
+        // Suara pengangkatan komponen melayang
+        playTone(280, 'sine', 0.12, 0.15);
+        setTimeout(() => playTone(420, 'sine', 0.14, 0.15), 80);
+        setTimeout(() => playTone(640, 'sine', 0.18, 0.12), 160);
+      }
+      function playChimeSound() {
+        // Suara pencapaian selesai
+        playTone(523.25, 'sine', 0.1, 0.12);
+        setTimeout(() => playTone(659.25, 'sine', 0.1, 0.12), 90);
+        setTimeout(() => playTone(783.99, 'sine', 0.12, 0.12), 180);
+        setTimeout(() => playTone(1046.50, 'sine', 0.25, 0.15), 270);
+      }
+      function playLockSound() {
+        // Suara merakit terkunci
+        playTone(480, 'square', 0.04, 0.12);
+        setTimeout(() => playTone(240, 'sine', 0.08, 0.15), 45);
+      }
 
       const btnSoundToggle = document.getElementById("btnSoundToggle");
       if (btnSoundToggle) {
@@ -1689,25 +1992,34 @@
       const viewPSU = document.getElementById("viewPSU");
       const btnOpenPSUExplorer = document.getElementById("btnOpenPSUExplorer");
 
-      function switchAppView(viewName) {
+      function switchAppView(viewName, autoAnimatePSU = false) {
         playModeSound();
         if (viewName === 'psu') {
           navTabPC.classList.remove("active");
           navTabPSU.classList.add("active");
           viewPC.classList.remove("active");
           viewPSU.classList.add("active");
+          if (autoAnimatePSU && typeof setDisassemblyStep === 'function') {
+            setDisassemblyStep(0);
+            setTimeout(() => {
+              playDisassemblyAnimation();
+            }, 600);
+          }
         } else {
           navTabPSU.classList.remove("active");
           navTabPC.classList.add("active");
           viewPSU.classList.remove("active");
           viewPC.classList.add("active");
+          if (typeof pauseDisassemblyAnimation === 'function') {
+            pauseDisassemblyAnimation();
+          }
         }
       }
 
       navTabPC.addEventListener("click", () => switchAppView('pc'));
       navTabPSU.addEventListener("click", () => switchAppView('psu'));
       if (btnOpenPSUExplorer) {
-        btnOpenPSUExplorer.addEventListener("click", () => switchAppView('psu'));
+        btnOpenPSUExplorer.addEventListener("click", () => switchAppView('psu', true));
       }
 
       /* ======================================================== */
@@ -1997,59 +2309,288 @@
         }
       };
 
-      /* View Switching Logic Inside PSU Explorer */
+      /* ======================================================== */
+      /* PSU DISASSEMBLY & ANIMATION ENGINE                       */
+      /* ======================================================== */
       const modeBtnReal = document.getElementById("modeBtnReal");
       const modeBtnExploded = document.getElementById("modeBtnExploded");
       const modeBtnInternal = document.getElementById("modeBtnInternal");
 
+      const btnPlayDisassembly = document.getElementById("btnPlayDisassembly");
+      const btnReassemble = document.getElementById("btnReassemble");
+      const animPlayIcon = document.getElementById("animPlayIcon");
+      const animPlayText = document.getElementById("animPlayText");
+
+      const stepNodes = [
+        document.getElementById("stepNode0"),
+        document.getElementById("stepNode1"),
+        document.getElementById("stepNode2"),
+        document.getElementById("stepNode3"),
+        document.getElementById("stepNode4")
+      ];
+
       const imgPsuReal = document.getElementById("imgPsuReal");
+      const imgPsuStep1 = document.getElementById("imgPsuStep1");
+      const imgPsuStep2 = document.getElementById("imgPsuStep2");
       const imgPsuExploded = document.getElementById("imgPsuExploded");
       const imgPsuInternal = document.getElementById("imgPsuInternal");
+      const allPsuImages = [imgPsuReal, imgPsuStep1, imgPsuStep2, imgPsuExploded, imgPsuInternal];
 
       const hotspotsReal = document.getElementById("hotspotsReal");
       const hotspotsExploded = document.getElementById("hotspotsExploded");
       const hotspotsInternal = document.getElementById("hotspotsInternal");
 
+      const hudStepBadge = document.getElementById("hudStepBadge");
+      const hudStepBarFill = document.getElementById("hudStepBarFill");
+      const hudTitle = document.getElementById("hudTitle");
+      const hudDesc = document.getElementById("hudDesc");
+
       const psuExplosionSlider = document.getElementById("psuExplosionSlider");
+      const speedBtns = document.querySelectorAll(".speed-btn");
 
-      function setPSUVisualMode(mode) {
-        playClickSound();
-        [modeBtnReal, modeBtnExploded, modeBtnInternal].forEach(b => b.classList.remove("active"));
-        [imgPsuReal, imgPsuExploded, imgPsuInternal].forEach(img => img.classList.remove("active"));
-        [hotspotsReal, hotspotsExploded, hotspotsInternal].forEach(grp => grp.classList.remove("active"));
+      let currentStepIndex = 3; // default: exploded view
+      let isAnimPlaying = false;
+      let animTimer = null;
+      let animSpeed = 1.0;
 
-        if (mode === 'real') {
-          modeBtnReal.classList.add("active");
-          imgPsuReal.classList.add("active");
-          hotspotsReal.classList.add("active");
-          if (psuExplosionSlider) psuExplosionSlider.value = "0";
-          inspectComponentById("real-fan");
-        } else if (mode === 'internal') {
-          modeBtnInternal.classList.add("active");
-          imgPsuInternal.classList.add("active");
-          hotspotsInternal.classList.add("active");
-          if (psuExplosionSlider) psuExplosionSlider.value = "2";
-          inspectComponentById("main-transformer");
-        } else {
-          // exploded view
-          modeBtnExploded.classList.add("active");
-          imgPsuExploded.classList.add("active");
-          hotspotsExploded.classList.add("active");
-          if (psuExplosionSlider) psuExplosionSlider.value = "1";
-          inspectComponentById("bulk-cap");
+      const DISASSEMBLY_DATA = [
+        {
+          index: 0,
+          badge: "🔒 TAHAP 1/5: PSU UTUH (DIRAKIT TERTUTUP)",
+          isGold: false,
+          progress: 20,
+          title: "PSU Utuh & Terpasang Rapat",
+          desc: "Kondisi fisik PSU utuh siap pasang. Seluruh sirkuit terlindung di dalam sasis baja hitam matte, baut pengaman terkunci, kisi pelindung kipas terpasang rapat.",
+          inspectId: "real-fan",
+          imgEl: imgPsuReal,
+          hotspotEl: hotspotsReal,
+          sound: playLockSound
+        },
+        {
+          index: 1,
+          badge: "🔩 TAHAP 2/5: BUKA 4 BAUT & TUTUP ATAS",
+          isGold: false,
+          progress: 40,
+          title: "Melepas Penutup Atas & Kipas FDB 120mm",
+          desc: "4 baut sudut sasis dilepaskan menggunakan obeng presisi. Penutup atas beserta kipas pendingin 120mm diangkat ke atas, memperlihatkan ruang dalam PSU.",
+          inspectId: "fan-casing",
+          imgEl: imgPsuStep1,
+          hotspotEl: hotspotsExploded,
+          sound: playScrewSound
+        },
+        {
+          index: 2,
+          badge: "❄️ TAHAP 3/5: PELEPASAN HEATSINK PENDINGIN",
+          isGold: false,
+          progress: 60,
+          title: "Mengangkat Sirip Aluminium Heatsink",
+          desc: "Blok pendingin aluminium berfin ganda terangkat dari transistor MOSFET switching dan diode bridge penyearah untuk pendinginan komponen.",
+          inspectId: "mosfet-heatsink",
+          imgEl: imgPsuStep2,
+          hotspotEl: hotspotsExploded,
+          sound: playLiftSound
+        },
+        {
+          index: 3,
+          badge: "💥 TAHAP 4/5: PEMBONGKARAN TERURAI (EXPLODED)",
+          isGold: true,
+          progress: 80,
+          title: "Dekomposisi Semua Modul Melayang 3D",
+          desc: "Seluruh modul terurai di udara: transformator frekuensi tinggi, kapasitor primer 450V, koil PFC, modul DC-DC, dan soket modular melayang bebas.",
+          inspectId: "bulk-cap",
+          imgEl: imgPsuExploded,
+          hotspotEl: hotspotsExploded,
+          sound: playChimeSound
+        },
+        {
+          index: 4,
+          badge: "🔬 TAHAP 5/5: INSPEKSI SIRKUIT PCB INTERNAL",
+          isGold: false,
+          progress: 100,
+          title: "Pemeriksaan Mikroskopis Sirkuit Cetak PCB",
+          desc: "Tampilan jarak dekat papan sirkuit PCB tebal dengan jalur tembaga berlapis solder industri, penyearah sekunder sinkron, dan IC kontrol proteksi.",
+          inspectId: "main-transformer",
+          imgEl: imgPsuInternal,
+          hotspotEl: hotspotsInternal,
+          sound: playLiftSound
+        }
+      ];
+
+      function setDisassemblyStep(stepIdx, fromUser = false) {
+        if (stepIdx < 0) stepIdx = 0;
+        if (stepIdx > 4) stepIdx = 4;
+        currentStepIndex = stepIdx;
+
+        const info = DISASSEMBLY_DATA[stepIdx];
+
+        // Update Layer Images
+        allPsuImages.forEach(img => {
+          if (img) img.classList.remove("active");
+        });
+        if (info.imgEl) info.imgEl.classList.add("active");
+
+        // Update Hotspot Groups
+        [hotspotsReal, hotspotsExploded, hotspotsInternal].forEach(grp => {
+          if (grp) grp.classList.remove("active");
+        });
+        if (info.hotspotEl) info.hotspotEl.classList.add("active");
+
+        // Update Stepper Pipeline Buttons
+        stepNodes.forEach((btn, idx) => {
+          if (btn) {
+            if (idx === stepIdx) btn.classList.add("active");
+            else btn.classList.remove("active");
+          }
+        });
+
+        // Update Mode Buttons in Header
+        [modeBtnReal, modeBtnExploded, modeBtnInternal].forEach(b => {
+          if (b) b.classList.remove("active");
+        });
+        if (stepIdx === 0 && modeBtnReal) modeBtnReal.classList.add("active");
+        else if (stepIdx === 3 && modeBtnExploded) modeBtnExploded.classList.add("active");
+        else if (stepIdx === 4 && modeBtnInternal) modeBtnInternal.classList.add("active");
+
+        // Update HUD Narration
+        if (hudStepBadge) {
+          hudStepBadge.textContent = info.badge;
+          if (info.isGold) hudStepBadge.classList.add("gold");
+          else hudStepBadge.classList.remove("gold");
+        }
+        if (hudStepBarFill) {
+          hudStepBarFill.style.width = `${info.progress}%`;
+        }
+        if (hudTitle) hudTitle.textContent = info.title;
+        if (hudDesc) hudDesc.textContent = info.desc;
+
+        // Update Slider
+        if (psuExplosionSlider) {
+          psuExplosionSlider.value = stepIdx.toString();
+        }
+
+        // Play Sound
+        if (info.sound) info.sound();
+
+        // Update bottom inspector
+        if (info.inspectId) {
+          inspectComponentById(info.inspectId);
+        }
+
+        if (fromUser && isAnimPlaying) {
+          pauseDisassemblyAnimation();
         }
       }
 
-      modeBtnReal.addEventListener("click", () => setPSUVisualMode('real'));
-      modeBtnExploded.addEventListener("click", () => setPSUVisualMode('exploded'));
-      modeBtnInternal.addEventListener("click", () => setPSUVisualMode('internal'));
+      function stepDisassemblyNext() {
+        if (currentStepIndex < 4) {
+          setDisassemblyStep(currentStepIndex + 1);
+          const stepDelays = [2200, 2400, 2600, 2800, 3000];
+          const delay = (stepDelays[currentStepIndex] || 2500) / animSpeed;
+          animTimer = setTimeout(stepDisassemblyNext, delay);
+        } else {
+          // Finished sequence!
+          pauseDisassemblyAnimation();
+          playChimeSound();
+        }
+      }
 
+      function playDisassemblyAnimation() {
+        if (isAnimPlaying) return;
+        isAnimPlaying = true;
+        if (btnPlayDisassembly) {
+          btnPlayDisassembly.classList.add("playing");
+          if (animPlayIcon) animPlayIcon.textContent = "⏸";
+          if (animPlayText) animPlayText.textContent = "Jeda Animasi";
+        }
+
+        // If at end, start from beginning (utuh)
+        if (currentStepIndex >= 4) {
+          setDisassemblyStep(0);
+        }
+
+        const delay = 2200 / animSpeed;
+        animTimer = setTimeout(stepDisassemblyNext, delay);
+      }
+
+      function pauseDisassemblyAnimation() {
+        isAnimPlaying = false;
+        if (animTimer) {
+          clearTimeout(animTimer);
+          animTimer = null;
+        }
+        if (btnPlayDisassembly) {
+          btnPlayDisassembly.classList.remove("playing");
+          if (animPlayIcon) animPlayIcon.textContent = "▶";
+          if (animPlayText) animPlayText.textContent = "Putar Animasi Bongkar";
+        }
+      }
+
+      function toggleDisassemblyAnimation() {
+        if (isAnimPlaying) {
+          pauseDisassemblyAnimation();
+        } else {
+          playDisassemblyAnimation();
+        }
+      }
+
+      function reassemblePSU() {
+        pauseDisassemblyAnimation();
+        playLockSound();
+        let step = currentStepIndex;
+        function rewind() {
+          if (step > 0) {
+            step--;
+            setDisassemblyStep(step);
+            setTimeout(rewind, 700 / animSpeed);
+          } else {
+            playLockSound();
+          }
+        }
+        rewind();
+      }
+
+      if (btnPlayDisassembly) {
+        btnPlayDisassembly.addEventListener("click", toggleDisassemblyAnimation);
+      }
+      if (btnReassemble) {
+        btnReassemble.addEventListener("click", reassemblePSU);
+      }
+
+      // Step nodes click
+      stepNodes.forEach((btn, idx) => {
+        if (btn) {
+          btn.addEventListener("click", () => {
+            setDisassemblyStep(idx, true);
+          });
+        }
+      });
+
+      // Speed selection
+      speedBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          speedBtns.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          animSpeed = parseFloat(btn.dataset.speed) || 1.0;
+          playClickSound();
+        });
+      });
+
+      // View mode header buttons
+      if (modeBtnReal) {
+        modeBtnReal.addEventListener("click", () => setDisassemblyStep(0, true));
+      }
+      if (modeBtnExploded) {
+        modeBtnExploded.addEventListener("click", () => setDisassemblyStep(3, true));
+      }
+      if (modeBtnInternal) {
+        modeBtnInternal.addEventListener("click", () => setDisassemblyStep(4, true));
+      }
+
+      // Slider input
       if (psuExplosionSlider) {
         psuExplosionSlider.addEventListener("input", (e) => {
-          const val = e.target.value;
-          if (val === "0") setPSUVisualMode('real');
-          else if (val === "1") setPSUVisualMode('exploded');
-          else if (val === "2") setPSUVisualMode('internal');
+          const val = parseInt(e.target.value, 10);
+          setDisassemblyStep(val, true);
         });
       }
 
