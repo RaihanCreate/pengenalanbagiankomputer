@@ -3,35 +3,173 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pengenalan Komputer - Anatomi Hardware PC</title>
-    <meta name="description" content="Media pembelajaran interaktif anatomi hardware PC" />
-    <meta property="og:title" content="Pengenalan Komputer - Anatomi Hardware PC" />
-    <meta property="og:description" content="Media pembelajaran interaktif anatomi hardware PC" />
+    <title>Pengenalan Komputer - Anatomi Hardware PC & Bedah Visual PSU</title>
+    <meta name="description" content="Media pembelajaran interaktif anatomi hardware PC dan visual bongkar pasang Power Supply Unit (PSU) secara terurai." />
+    <meta property="og:title" content="Pengenalan Komputer - Anatomi Hardware PC & Bedah Visual PSU" />
+    <meta property="og:description" content="Media pembelajaran interaktif anatomi hardware PC dan visual bongkar pasang Power Supply Unit (PSU) secara terurai." />
     <style>
+      :root {
+        --cyan-glow: #00ffcc;
+        --cyan-dim: rgba(0, 255, 204, 0.25);
+        --cyan-semi: rgba(0, 255, 204, 0.55);
+        --gold-glow: #fbbf24;
+        --gold-semi: rgba(251, 191, 36, 0.5);
+        --accent-orange: #f97316;
+        --bg-dark: #070b12;
+        --panel-bg: rgba(10, 16, 26, 0.92);
+        --border-glass: rgba(0, 255, 204, 0.35);
+      }
+
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
 
-      html,
-      body {
+      html, body {
         width: 100%;
         height: 100%;
         overflow: hidden;
-        background: #000;
+        background: var(--bg-dark);
+        color: #ffffff;
         font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        user-select: none;
       }
 
-      /* Container background */
-      .background {
+      /* TOP NAVIGATION BAR */
+      .top-navbar {
         position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 58px;
+        background: rgba(7, 11, 18, 0.88);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(0, 255, 204, 0.2);
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 18px;
+      }
+
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        font-size: 15px;
+        letter-spacing: 0.5px;
+        color: #ffffff;
+      }
+
+      .nav-badge-pill {
+        background: rgba(0, 255, 204, 0.15);
+        color: var(--cyan-glow);
+        border: 1px solid rgba(0, 255, 204, 0.4);
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+      }
+
+      .nav-tabs {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(15, 23, 42, 0.7);
+        padding: 4px;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .nav-tab-btn {
+        background: transparent;
+        border: none;
+        color: #94a3b8;
+        padding: 6px 14px;
+        border-radius: 18px;
+        font-size: 12.5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .nav-tab-btn:hover {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .nav-tab-btn.active {
+        background: var(--cyan-glow);
+        color: #050811;
+        box-shadow: 0 0 14px rgba(0, 255, 204, 0.4);
+        font-weight: 700;
+      }
+
+      .nav-tab-btn.active.gold {
+        background: var(--gold-glow);
+        color: #050811;
+        box-shadow: 0 0 14px rgba(251, 191, 36, 0.45);
+      }
+
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .nav-btn-icon {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #e2e8f0;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.2s ease;
+      }
+
+      .nav-btn-icon:hover {
+        border-color: var(--cyan-glow);
+        color: var(--cyan-glow);
+        background: rgba(0, 255, 204, 0.1);
+      }
+
+      /* VIEW CONTAINERS */
+      .app-view {
+        position: absolute;
+        top: 58px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        overflow: hidden;
+        display: none;
+      }
+
+      .app-view.active {
+        display: block;
+      }
+
+      /* ========================================================== */
+      /* VIEW 1: ANATOMI PC LENGKAP (ORIGINAL PC VIEW)              */
+      /* ========================================================== */
+      .background {
+        position: absolute;
         inset: 0;
         overflow: hidden;
         background: #000;
       }
 
-      /* VIDEO */
       #backgroundVideo {
         position: absolute;
         inset: 0;
@@ -40,14 +178,11 @@
         object-fit: cover;
         opacity: 1;
         transform: scale(1);
-        transition:
-          opacity 2.5s ease-in-out,
-          transform 3s ease-in-out;
+        transition: opacity 2.5s ease-in-out, transform 3s ease-in-out;
         z-index: 1;
         cursor: pointer;
       }
 
-      /* FOTO */
       #backgroundImage {
         position: absolute;
         inset: 0;
@@ -56,26 +191,21 @@
         object-fit: cover;
         opacity: 0;
         transform: scale(1.05);
-        transition:
-          opacity 2.5s ease-in-out,
-          transform 4s ease-out;
+        transition: opacity 2.5s ease-in-out, transform 4s ease-out;
         z-index: 2;
       }
 
-      /* Saat foto muncul */
       #backgroundImage.show {
         opacity: 1;
         transform: scale(1);
       }
 
-      /* Saat video menghilang */
       #backgroundVideo.hide {
         opacity: 0;
         transform: scale(1.03);
         pointer-events: none;
       }
 
-      /* Overlay */
       .overlay {
         position: absolute;
         inset: 0;
@@ -84,7 +214,6 @@
         pointer-events: none;
       }
 
-      /* Container Hotspot untuk Komponen PC */
       .hotspot-container {
         position: absolute;
         inset: 0;
@@ -99,18 +228,17 @@
         pointer-events: auto;
       }
 
-      /* Titik Hotspot */
+      /* Hotspot styling */
       .hotspot {
         position: absolute;
-        width: 26px;
-        height: 26px;
+        width: 28px;
+        height: 28px;
         transform: translate(-50%, -50%);
         cursor: pointer;
         z-index: 5;
         outline: none;
       }
 
-      /* Lingkaran berdenyut */
       .hotspot::before {
         content: "";
         position: absolute;
@@ -123,8 +251,8 @@
       .hotspot::after {
         content: "";
         position: absolute;
-        top: 6px;
-        left: 6px;
+        top: 7px;
+        left: 7px;
         width: 14px;
         height: 14px;
         border-radius: 50%;
@@ -135,27 +263,38 @@
 
       .hotspot:hover::after,
       .hotspot.active::after {
-        transform: scale(1.25);
+        transform: scale(1.3);
         background: #ffffff;
-        box-shadow: 0 0 16px #00ffcc, 0 0 4px #ffffff;
+        box-shadow: 0 0 16px #00ffcc, 0 0 6px #ffffff;
+      }
+
+      /* Special highlight for PSU hotspot */
+      .hotspot.psu-featured::before {
+        background: rgba(251, 191, 36, 0.7);
+        animation: pulseGold 1.6s infinite;
+      }
+      .hotspot.psu-featured::after {
+        background: #fbbf24;
+        box-shadow: 0 0 12px #fbbf24;
+      }
+      .hotspot.psu-featured:hover::after,
+      .hotspot.psu-featured.active::after {
+        background: #ffffff;
+        box-shadow: 0 0 18px #fbbf24, 0 0 6px #ffffff;
       }
 
       @keyframes pulse {
-        0% {
-          transform: scale(0.95);
-          box-shadow: 0 0 0 0 rgba(0, 255, 204, 0.7);
-        }
-        70% {
-          transform: scale(1.85);
-          box-shadow: 0 0 0 12px rgba(0, 255, 204, 0);
-        }
-        100% {
-          transform: scale(0.95);
-          box-shadow: 0 0 0 0 rgba(0, 255, 204, 0);
-        }
+        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 204, 0.7); }
+        70% { transform: scale(1.9); box-shadow: 0 0 0 12px rgba(0, 255, 204, 0); }
+        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 204, 0); }
       }
 
-      /* Tooltip Nama dan Penjelasan Komponen */
+      @keyframes pulseGold {
+        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.8); }
+        70% { transform: scale(2.0); box-shadow: 0 0 0 14px rgba(251, 191, 36, 0); }
+        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+      }
+
       .tooltip {
         position: absolute;
         bottom: 140%;
@@ -199,7 +338,7 @@
       }
 
       .tooltip-title {
-        font-size: 14px;
+        font-size: 13.5px;
         font-weight: 700;
         color: #00ffcc;
         line-height: 1.25;
@@ -212,7 +351,6 @@
         line-height: 1.45;
       }
 
-      /* Muncul saat di-hover atau aktif */
       .hotspot:hover .tooltip,
       .hotspot:focus .tooltip,
       .hotspot.active .tooltip {
@@ -221,41 +359,29 @@
         transform: translateX(-50%) translateY(0);
       }
 
-      /* Edge positioning alignments */
-      .hs-align-left .tooltip {
-        left: 0;
-        transform: translateX(0) translateY(8px);
-      }
+      .hs-align-left .tooltip { left: 0; transform: translateX(0) translateY(8px); }
       .hs-align-left:hover .tooltip,
       .hs-align-left:focus .tooltip,
-      .hs-align-left.active .tooltip {
-        transform: translateX(0) translateY(0);
-      }
+      .hs-align-left.active .tooltip { transform: translateX(0) translateY(0); }
 
-      .hs-align-right .tooltip {
-        left: auto;
-        right: 0;
-        transform: translateX(0) translateY(8px);
-      }
+      .hs-align-right .tooltip { left: auto; right: 0; transform: translateX(0) translateY(8px); }
       .hs-align-right:hover .tooltip,
       .hs-align-right:focus .tooltip,
-      .hs-align-right.active .tooltip {
-        transform: translateX(0) translateY(0);
-      }
+      .hs-align-right.active .tooltip { transform: translateX(0) translateY(0); }
 
-      /* Konten Teks Utama & Info Card */
+      /* PC Content Overlay */
       .content {
         position: relative;
         z-index: 6;
         width: 100%;
-        height: 100vh;
+        height: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-direction: column;
         color: white;
         text-align: center;
-        padding: 24px 20px;
+        padding: 20px 20px 14px 20px;
         pointer-events: none;
       }
 
@@ -264,33 +390,32 @@
       }
 
       h1 {
-        font-size: 42px;
+        font-size: 36px;
         font-weight: 800;
         letter-spacing: -0.5px;
-        margin-bottom: 6px;
+        margin-bottom: 4px;
         text-shadow: 0 3px 15px rgba(0, 0, 0, 0.8);
       }
 
       .header-subtitle {
-        font-size: 16px;
-        color: #e2e8f0;
+        font-size: 15px;
+        color: #cbd5e1;
         text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
       }
 
-      /* Panel Info Komponen di Bawah */
       .bottom-info-wrapper {
         pointer-events: auto;
         width: 100%;
-        max-width: 680px;
-        margin-bottom: 12px;
+        max-width: 720px;
+        margin-bottom: 6px;
       }
 
       .info-card {
-        background: rgba(10, 16, 26, 0.88);
+        background: rgba(10, 16, 26, 0.9);
         border: 1px solid rgba(0, 255, 204, 0.45);
-        border-radius: 10px;
+        border-radius: 12px;
         padding: 12px 18px;
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(12px);
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 16px rgba(0, 255, 204, 0.15);
         display: flex;
         align-items: center;
@@ -305,8 +430,8 @@
       }
 
       .info-card-media {
-        width: 48px;
-        height: 48px;
+        width: 52px;
+        height: 52px;
         border-radius: 8px;
         background: rgba(255, 255, 255, 0.08);
         border: 1px solid rgba(0, 255, 204, 0.35);
@@ -340,23 +465,47 @@
       }
 
       .info-card-desc {
-        font-size: 13px;
+        font-size: 12.5px;
         color: #cbd5e1;
         line-height: 1.4;
       }
 
-      /* Tombol skip intro jika ingin langsung ke anatomi */
+      .info-card-action {
+        flex-shrink: 0;
+      }
+
+      .btn-cta-psu {
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        color: #000;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 4px 15px rgba(251, 191, 36, 0.35);
+        transition: all 0.2s ease;
+      }
+
+      .btn-cta-psu:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(251, 191, 36, 0.55);
+      }
+
       .skip-button {
         position: absolute;
-        top: 24px;
-        right: 24px;
+        top: 14px;
+        right: 18px;
         z-index: 10;
-        background: rgba(10, 16, 26, 0.8);
+        background: rgba(10, 16, 26, 0.85);
         color: #00ffcc;
         border: 1px solid #00ffcc;
-        padding: 8px 16px;
+        padding: 6px 14px;
         border-radius: 20px;
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 600;
         cursor: pointer;
         backdrop-filter: blur(8px);
@@ -376,354 +525,1194 @@
         display: none;
       }
 
-      /* Posisi Koordinat Hotspot */
-      .hs-side-panel {
-        top: 41%;
-        left: 6%;
-      }
-      .hs-case-fan {
-        top: 31%;
-        left: 11%;
-      }
-      .hs-cooler {
-        top: 33%;
-        left: 19%;
-      }
-      .hs-cpu {
-        top: 36%;
-        left: 25%;
-      }
-      .hs-ram {
-        top: 34%;
-        left: 27%;
-      }
-      .hs-nvme {
-        top: 49%;
-        left: 21%;
-      }
-      .hs-gpu {
-        top: 41%;
-        left: 32%;
-      }
-      .hs-pcie-cards {
-        top: 58%;
-        left: 20%;
-      }
-      .hs-casing {
-        top: 45%;
-        left: 46%;
-      }
-      .hs-mobo {
-        top: 45%;
-        left: 61%;
-      }
-      .hs-cable {
-        top: 36%;
-        left: 70%;
-      }
-      .hs-psu {
-        top: 36%;
-        left: 77%;
-      }
-      .hs-ssd-bracket {
-        top: 48%;
-        left: 78%;
-      }
-      .hs-frontcover {
-        top: 45%;
-        left: 88%;
-      }
-      .hs-back-panel {
-        top: 45%;
-        left: 93%;
+      /* PC Coordinates */
+      .hs-side-panel { top: 41%; left: 6%; }
+      .hs-case-fan { top: 31%; left: 11%; }
+      .hs-cooler { top: 33%; left: 19%; }
+      .hs-cpu { top: 36%; left: 25%; }
+      .hs-ram { top: 34%; left: 27%; }
+      .hs-nvme { top: 49%; left: 21%; }
+      .hs-gpu { top: 41%; left: 32%; }
+      .hs-pcie-cards { top: 58%; left: 20%; }
+      .hs-casing { top: 45%; left: 46%; }
+      .hs-mobo { top: 45%; left: 61%; }
+      .hs-cable { top: 36%; left: 70%; }
+      .hs-psu { top: 36%; left: 77%; }
+      .hs-ssd-bracket { top: 48%; left: 78%; }
+      .hs-frontcover { top: 45%; left: 88%; }
+      .hs-back-panel { top: 45%; left: 93%; }
+
+      /* ========================================================== */
+      /* VIEW 2: BEDAH ANATOMI VISUAL PSU (EXPLODED & REAL)        */
+      /* ========================================================== */
+      #viewPSU {
+        background: radial-gradient(circle at 50% 40%, #0d1527 0%, #060911 80%, #020306 100%);
       }
 
-      /* Mobile Adjustment */
-      @media (max-width: 768px) {
-        h1 {
-          font-size: 26px;
+      .psu-workspace {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      /* PSU Control Toolbar */
+      .psu-toolbar {
+        height: 60px;
+        background: rgba(10, 16, 26, 0.7);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 10;
+        backdrop-filter: blur(10px);
+      }
+
+      .psu-title-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .psu-title-group h2 {
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: -0.2px;
+        color: #f8fafc;
+      }
+
+      .badge-spec {
+        font-size: 10px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 4px;
+        background: rgba(251, 191, 36, 0.15);
+        color: #fbbf24;
+        border: 1px solid rgba(251, 191, 36, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+      }
+
+      /* Mode Switcher Segmented Control */
+      .view-mode-selector {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(15, 23, 42, 0.85);
+        padding: 4px;
+        border-radius: 10px;
+        border: 1px solid rgba(0, 255, 204, 0.25);
+      }
+
+      .mode-btn {
+        background: transparent;
+        border: none;
+        color: #94a3b8;
+        padding: 6px 14px;
+        border-radius: 7px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s ease;
+      }
+
+      .mode-btn:hover {
+        color: #ffffff;
+      }
+
+      .mode-btn.active {
+        background: rgba(0, 255, 204, 0.2);
+        color: var(--cyan-glow);
+        border: 1px solid rgba(0, 255, 204, 0.5);
+        box-shadow: 0 0 12px rgba(0, 255, 204, 0.25);
+      }
+
+      .mode-btn.gold.active {
+        background: rgba(251, 191, 36, 0.2);
+        color: var(--gold-glow);
+        border: 1px solid rgba(251, 191, 36, 0.5);
+        box-shadow: 0 0 12px rgba(251, 191, 36, 0.25);
+      }
+
+      /* Stages Filter Strip */
+      .psu-filter-strip {
+        padding: 8px 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(8, 12, 20, 0.4);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        overflow-x: auto;
+        white-space: nowrap;
+        z-index: 9;
+      }
+
+      .filter-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        margin-right: 4px;
+      }
+
+      .filter-chip {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #94a3b8;
+        font-size: 11.5px;
+        padding: 4px 12px;
+        border-radius: 14px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+
+      .filter-chip:hover {
+        border-color: rgba(0, 255, 204, 0.4);
+        color: #f1f5f9;
+      }
+
+      .filter-chip.active {
+        background: rgba(0, 255, 204, 0.15);
+        border-color: var(--cyan-glow);
+        color: var(--cyan-glow);
+        font-weight: 600;
+      }
+
+      /* Visual Canvas Stage */
+      .psu-stage-viewport {
+        position: relative;
+        flex: 1;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      /* Blueprint Grid Background */
+      .blueprint-grid {
+        position: absolute;
+        inset: 0;
+        background-image: 
+          linear-gradient(rgba(0, 255, 204, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px);
+        background-size: 32px 32px;
+        pointer-events: none;
+      }
+
+      .viewport-frame {
+        position: relative;
+        max-width: 1100px;
+        width: 92%;
+        aspect-ratio: 16 / 9;
+        max-height: calc(100% - 20px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.75), 0 0 30px rgba(0, 255, 204, 0.1);
+        border: 1px solid rgba(0, 255, 204, 0.25);
+        background: #04060a;
+      }
+
+      .psu-visual-layer {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transform: scale(1.02);
+        transition: opacity 0.5s ease-in-out, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        pointer-events: none;
+      }
+
+      .psu-visual-layer.active {
+        opacity: 1;
+        transform: scale(1);
+        pointer-events: auto;
+      }
+
+      /* PSU Interactive Hotspots */
+      .psu-hotspots-group {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+
+      .psu-hotspots-group.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .psu-pin {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+        z-index: 10;
+        outline: none;
+      }
+
+      .pin-body {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: rgba(10, 16, 26, 0.9);
+        border: 2px solid var(--cyan-glow);
+        color: var(--cyan-glow);
+        font-size: 11px;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 12px rgba(0, 255, 204, 0.6);
+        transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .pin-pulse {
+        position: absolute;
+        inset: -5px;
+        border-radius: 50%;
+        border: 2px solid rgba(0, 255, 204, 0.6);
+        animation: pinRipples 2s infinite;
+        pointer-events: none;
+      }
+
+      .psu-pin:hover .pin-body,
+      .psu-pin.active .pin-body {
+        transform: scale(1.25);
+        background: var(--cyan-glow);
+        color: #040810;
+        box-shadow: 0 0 20px #00ffcc, 0 0 8px #ffffff;
+      }
+
+      .psu-pin.gold .pin-body {
+        border-color: #fbbf24;
+        color: #fbbf24;
+        box-shadow: 0 0 12px rgba(251, 191, 36, 0.6);
+      }
+      .psu-pin.gold .pin-pulse {
+        border-color: rgba(251, 191, 36, 0.6);
+      }
+      .psu-pin.gold:hover .pin-body,
+      .psu-pin.gold.active .pin-body {
+        background: #fbbf24;
+        color: #040810;
+        box-shadow: 0 0 20px #fbbf24, 0 0 8px #ffffff;
+      }
+
+      .psu-pin.dimmed {
+        opacity: 0.25;
+        filter: grayscale(1);
+        pointer-events: none;
+      }
+
+      @keyframes pinRipples {
+        0% { transform: scale(0.9); opacity: 0.9; }
+        80% { transform: scale(2.2); opacity: 0; }
+        100% { transform: scale(2.2); opacity: 0; }
+      }
+
+      /* Hover Floating Pill on Pin */
+      .pin-label-pill {
+        position: absolute;
+        top: 50%;
+        left: 36px;
+        transform: translateY(-50%);
+        background: rgba(7, 11, 18, 0.95);
+        color: #f1f5f9;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 11.5px;
+        font-weight: 700;
+        white-space: nowrap;
+        border: 1px solid rgba(0, 255, 204, 0.4);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+        pointer-events: none;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s ease;
+      }
+
+      .psu-pin:hover .pin-label-pill,
+      .psu-pin.active .pin-label-pill {
+        opacity: 1;
+        visibility: visible;
+        left: 40px;
+      }
+
+      .pin-flip-left .pin-label-pill {
+        left: auto;
+        right: 36px;
+      }
+      .pin-flip-left:hover .pin-label-pill,
+      .pin-flip-left.active .pin-label-pill {
+        left: auto;
+        right: 40px;
+      }
+
+      /* Disassembly Axis Range Slider Bar */
+      .psu-slider-strip {
+        height: 38px;
+        background: rgba(10, 16, 26, 0.8);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        padding: 0 20px;
+      }
+
+      .slider-caption {
+        font-size: 11.5px;
+        font-weight: 600;
+        color: #94a3b8;
+      }
+
+      .disassembly-range {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 220px;
+        height: 6px;
+        background: #1e293b;
+        border-radius: 3px;
+        outline: none;
+        cursor: pointer;
+      }
+
+      .disassembly-range::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--cyan-glow);
+        box-shadow: 0 0 10px rgba(0, 255, 204, 0.6);
+        cursor: pointer;
+        transition: transform 0.1s ease;
+      }
+      .disassembly-range::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+      }
+
+      /* PSU Bottom Inspection Drawer / Card */
+      .psu-inspector-panel {
+        background: rgba(10, 16, 26, 0.95);
+        border-top: 1px solid rgba(0, 255, 204, 0.3);
+        backdrop-filter: blur(14px);
+        padding: 12px 20px;
+        min-height: 140px;
+        max-height: 220px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        z-index: 10;
+        box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.7);
+      }
+
+      .inspector-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        padding-bottom: 8px;
+      }
+
+      .inspector-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .inspector-tag {
+        font-size: 10px;
+        font-weight: 800;
+        padding: 2px 8px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        background: rgba(0, 255, 204, 0.15);
+        color: var(--cyan-glow);
+        border: 1px solid rgba(0, 255, 204, 0.35);
+      }
+
+      .inspector-tag.gold {
+        background: rgba(251, 191, 36, 0.15);
+        color: #fbbf24;
+        border-color: rgba(251, 191, 36, 0.4);
+      }
+
+      .inspector-title {
+        font-size: 17px;
+        font-weight: 800;
+        color: #ffffff;
+      }
+
+      .inspector-voltage {
+        font-size: 11px;
+        font-weight: 700;
+        color: #94a3b8;
+        background: rgba(255, 255, 255, 0.06);
+        padding: 2px 7px;
+        border-radius: 4px;
+      }
+
+      .inspector-grid {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr;
+        gap: 14px;
+        font-size: 12.5px;
+        line-height: 1.45;
+      }
+
+      .inspector-col-title {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .col-fungsi .inspector-col-title { color: var(--cyan-glow); }
+      .col-cara-kerja .inspector-col-title { color: #38bdf8; }
+      .col-kerusakan .inspector-col-title { color: #f87171; }
+
+      .inspector-desc-text {
+        color: #cbd5e1;
+      }
+
+      /* Safety Alert Floating Banner */
+      .safety-banner {
+        position: absolute;
+        top: 70px;
+        right: 18px;
+        background: rgba(220, 38, 38, 0.15);
+        border: 1px solid rgba(239, 68, 68, 0.5);
+        border-radius: 8px;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        max-width: 380px;
+        backdrop-filter: blur(8px);
+        z-index: 20;
+        font-size: 11.5px;
+        color: #fca5a5;
+        line-height: 1.35;
+      }
+
+      .safety-banner strong {
+        color: #fee2e2;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 860px) {
+        .inspector-grid {
+          grid-template-columns: 1fr;
+          gap: 10px;
         }
-        .header-subtitle {
-          font-size: 13px;
+        .safety-banner {
+          display: none;
         }
-        .hotspot {
-          width: 22px;
-          height: 22px;
-        }
-        .tooltip {
-          width: 220px;
-          padding: 10px 12px;
-        }
-        .tooltip-title {
-          font-size: 13px;
-        }
-        .tooltip-desc {
-          font-size: 11px;
-        }
-        .info-card {
-          padding: 10px 14px;
-          gap: 12px;
-        }
-        .info-card-media {
-          width: 40px;
-          height: 40px;
-        }
-        .info-card-title {
-          font-size: 14px;
-        }
-        .info-card-desc {
-          font-size: 12px;
+        .psu-inspector-panel {
+          max-height: 250px;
         }
       }
     </style>
   </head>
   <body>
-    <!-- Tombol Lewati Video -->
-    <button id="skipIntroBtn" class="skip-button" type="button" title="Lewati video intro ke diagram anatomi">
-      Lewati Video &rarr;
-    </button>
+    <!-- TOP GLOBAL NAVIGATION -->
+    <header class="top-navbar">
+      <div class="nav-brand">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00ffcc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+          <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+          <line x1="6" y1="6" x2="6.01" y2="6"></line>
+          <line x1="6" y1="18" x2="6.01" y2="18"></line>
+        </svg>
+        <span>MEDIA HARDWARE PC</span>
+        <span class="nav-badge-pill">Edukasi Interaktif</span>
+      </div>
 
-    <div id="mainBackground" class="background">
-      <!-- VIDEO -->
-      <video id="backgroundVideo" autoplay muted playsinline>
-        <source src="vidtugas.mp4" type="video/mp4" />
-        Browser tidak mendukung video.
-      </video>
+      <!-- Mode Switcher -->
+      <nav class="nav-tabs" aria-label="Mode Aplikasi">
+        <button id="navTabPC" class="nav-tab-btn active" type="button" title="Lihat Anatomi Casing dan Komponen PC">
+          🖥️ Anatomi PC
+        </button>
+        <button id="navTabPSU" class="nav-tab-btn gold" type="button" title="Bedah Anatomi & Tampilan Terurai PSU">
+          ⚡ Bedah Visual PSU (Bongkar)
+        </button>
+      </nav>
 
-      <!-- FOTO -->
-      <img id="backgroundImage" src="foto.png" alt="Hardware PC Diagram" />
+      <!-- Utility Tools -->
+      <div class="nav-actions">
+        <button id="btnSoundToggle" class="nav-btn-icon" type="button" title="Nyalakan / Matikan Efek Suara">
+          🔊
+        </button>
+        <button id="btnFullscreenToggle" class="nav-btn-icon" type="button" title="Mode Layar Penuh">
+          ⛶
+        </button>
+      </div>
+    </header>
 
-      <!-- HOTSPOTS KOMPONEN PC -->
-      <div id="hotspotContainer" class="hotspot-container">
-        <!-- Side Panel -->
-        <div id="hs-side-panel" class="hotspot hs-side-panel hs-align-left" tabindex="0" role="button" aria-label="Tempered Glass / Side Panel"
-          data-title="Tempered Glass / Side Panel"
-          data-desc="Panel samping kaca transparan yang melindungi komponen internal sekaligus menampilkan keindahan hardware PC."
-          data-img="">
-          <div class="tooltip">
-            <div class="tooltip-header">
-              <div class="tooltip-title">Tempered Glass / Side Panel</div>
+    <!-- ========================================================== -->
+    <!-- VIEW 1: ANATOMI PC UTAMA                                   -->
+    <!-- ========================================================== -->
+    <main id="viewPC" class="app-view active">
+      <!-- Tombol Lewati Video -->
+      <button id="skipIntroBtn" class="skip-button" type="button" title="Lewati video intro ke diagram anatomi">
+        Lewati Video &rarr;
+      </button>
+
+      <div id="mainBackground" class="background">
+        <!-- VIDEO INTRO -->
+        <video id="backgroundVideo" autoplay muted playsinline>
+          <source src="vidtugas.mp4" type="video/mp4" />
+          Browser tidak mendukung video.
+        </video>
+
+        <!-- FOTO HARDWARE PC -->
+        <img id="backgroundImage" src="foto.png" alt="Hardware PC Diagram" />
+
+        <!-- HOTSPOTS KOMPONEN PC -->
+        <div id="hotspotContainer" class="hotspot-container">
+          <!-- Side Panel -->
+          <div id="hs-side-panel" class="hotspot hs-side-panel hs-align-left" tabindex="0" role="button" aria-label="Tempered Glass / Side Panel"
+            data-title="Tempered Glass / Side Panel"
+            data-desc="Panel samping kaca transparan yang melindungi komponen internal sekaligus menampilkan keindahan hardware PC."
+            data-img="">
+            <div class="tooltip">
+              <div class="tooltip-header"><div class="tooltip-title">Tempered Glass / Side Panel</div></div>
+              <div class="tooltip-desc">Panel samping kaca transparan yang melindungi komponen internal sekaligus menampilkan keindahan hardware PC.</div>
             </div>
-            <div class="tooltip-desc">Panel samping kaca transparan yang melindungi komponen internal sekaligus menampilkan keindahan hardware PC.</div>
+          </div>
+
+          <!-- Case Fan -->
+          <div id="hs-case-fan" class="hotspot hs-case-fan hs-align-left" tabindex="0" role="button" aria-label="Case Fan"
+            data-title="Case Fan"
+            data-desc="Kipas sirkulasi casing untuk meniup udara dingin ke dalam (intake) dan membuang udara panas keluar (exhaust)."
+            data-img="van.png">
+            <div class="tooltip">
+              <div class="tooltip-header"><img class="tooltip-thumb" src="van.png" alt="Case Fan" /><div class="tooltip-title">Case Fan</div></div>
+              <div class="tooltip-desc">Kipas sirkulasi casing untuk meniup udara dingin ke dalam (intake) dan membuang udara panas keluar (exhaust).</div>
+            </div>
+          </div>
+
+          <!-- CPU Air Cooler -->
+          <div id="hs-cooler" class="hotspot hs-cooler" tabindex="0" role="button" aria-label="CPU Air Cooler"
+            data-title="CPU Air Cooler"
+            data-desc="Pendingin dengan pipa tembaga (heatpipes) dan sirip yang menyerap serta membuang panas dari prosesor secara efisien."
+            data-img="van.png">
+            <div class="tooltip">
+              <div class="tooltip-header"><img class="tooltip-thumb" src="van.png" alt="CPU Air Cooler" /><div class="tooltip-title">CPU Air Cooler</div></div>
+              <div class="tooltip-desc">Pendingin dengan pipa tembaga (heatpipes) dan sirip yang menyerap serta membuang panas dari prosesor secara efisien.</div>
+            </div>
+          </div>
+
+          <!-- Sleeved Cable -->
+          <div id="hs-cable" class="hotspot hs-cable" tabindex="0" role="button" aria-label="Sleeved Cable"
+            data-title="Sleeved Cable"
+            data-desc="Kabel daya berpelindung anyaman rapi untuk suplai arus listrik yang aman, rapi, dan estetis di dalam casing."
+            data-img="">
+            <div class="tooltip">
+              <div class="tooltip-header"><div class="tooltip-title">Sleeved Cable</div></div>
+              <div class="tooltip-desc">Kabel daya berpelindung anyaman rapi untuk suplai arus listrik yang aman, rapi, dan estetis di dalam casing.</div>
+            </div>
+          </div>
+
+          <!-- Processor (CPU) -->
+          <div id="hs-cpu" class="hotspot hs-cpu" tabindex="0" role="button" aria-label="Processor (CPU)"
+            data-title="Processor (CPU)"
+            data-desc="Otak utama komputer yang mengendalikan seluruh sistem dan mengeksekusi semua instruksi komputasi secara presisi."
+            data-img="cpu.png">
+            <div class="tooltip">
+              <div class="tooltip-header"><img class="tooltip-thumb" src="cpu.png" alt="CPU" /><div class="tooltip-title">Processor (CPU)</div></div>
+              <div class="tooltip-desc">Otak utama komputer yang mengendalikan seluruh sistem dan mengeksekusi semua instruksi komputasi secara presisi.</div>
+            </div>
+          </div>
+
+          <!-- RAM Memory -->
+          <div id="hs-ram" class="hotspot hs-ram" tabindex="0" role="button" aria-label="RAM Memory"
+            data-title="RAM Memory"
+            data-desc="Memori akses acak berkecepatan tinggi yang menyimpan data aktif sementara agar dapat diproses kilat oleh prosesor."
+            data-img="ram.png">
+            <div class="tooltip">
+              <div class="tooltip-header"><img class="tooltip-thumb" src="ram.png" alt="RAM" /><div class="tooltip-title">RAM Memory</div></div>
+              <div class="tooltip-desc">Memori akses acak berkecepatan tinggi yang menyimpan data aktif sementara agar dapat diproses kilat oleh prosesor.</div>
+            </div>
+          </div>
+
+          <!-- M.2 NVMe SSD -->
+          <div id="hs-nvme" class="hotspot hs-nvme" tabindex="0" role="button" aria-label="M.2 NVMe SSD"
+            data-title="M.2 NVMe SSD"
+            data-desc="Media penyimpanan generasi modern berkecepatan ultra tinggi untuk booting sistem operasi dan pemuatan file super cepat."
+            data-img="memory card.png">
+            <div class="tooltip">
+              <div class="tooltip-header"><img class="tooltip-thumb" src="memory card.png" alt="SSD" /><div class="tooltip-title">M.2 NVMe SSD</div></div>
+              <div class="tooltip-desc">Media penyimpanan generasi modern berkecepatan ultra tinggi untuk booting sistem operasi dan pemuatan file super cepat.</div>
+            </div>
+          </div>
+
+          <!-- Graphics Card (GPU) -->
+          <div id="hs-gpu" class="hotspot hs-gpu" tabindex="0" role="button" aria-label="Graphics Card (GPU)"
+            data-title="Graphics Card (GPU)"
+            data-desc="Kartu grafis khusus pengolah visual, grafis 3D, rendering video, dan akselerasi komputasi visual ke monitor."
+            data-img="">
+            <div class="tooltip">
+              <div class="tooltip-header"><div class="tooltip-title">Graphics Card (GPU)</div></div>
+              <div class="tooltip-desc">Kartu grafis khusus pengolah visual, grafis 3D, rendering video, dan akselerasi komputasi visual ke monitor.</div>
+            </div>
+          </div>
+
+          <!-- Expansion Cards / LAN -->
+          <div id="hs-pcie-cards" class="hotspot hs-pcie-cards" tabindex="0" role="button" aria-label="Expansion Cards / LAN"
+            data-title="Expansion Cards / LAN"
+            data-desc="Kartu ekspansi tambahan pada slot PCIe (seperti Network LAN Card atau Sound Card) guna memperluas konektivitas PC."
+            data-img="network card.png">
+            <div class="tooltip">
+              <div class="tooltip-header"><img class="tooltip-thumb" src="network card.png" alt="Network Card" /><div class="tooltip-title">Expansion Cards / LAN</div></div>
+              <div class="tooltip-desc">Kartu ekspansi tambahan pada slot PCIe (seperti Network LAN Card atau Sound Card) guna memperluas konektivitas PC.</div>
+            </div>
+          </div>
+
+          <!-- PC Case / Chassis -->
+          <div id="hs-casing" class="hotspot hs-casing" tabindex="0" role="button" aria-label="PC Case / Chassis"
+            data-title="PC Case / Chassis"
+            data-desc="Rangka utama penopang seluruh hardware komputer yang menjaga posisi komponen tetap aman serta mengatur arah aliran udara."
+            data-img="">
+            <div class="tooltip">
+              <div class="tooltip-header"><div class="tooltip-title">PC Case / Chassis</div></div>
+              <div class="tooltip-desc">Rangka utama penopang seluruh hardware komputer yang menjaga posisi komponen tetap aman serta mengatur arah aliran udara.</div>
+            </div>
+          </div>
+
+          <!-- Motherboard -->
+          <div id="hs-mobo" class="hotspot hs-mobo" tabindex="0" role="button" aria-label="Motherboard"
+            data-title="Motherboard"
+            data-desc="Papan sirkuit induk yang menghubungkan CPU, memori, kartu grafis, dan seluruh perangkat keras dalam satu sistem terpadu."
+            data-img="mobo.png">
+            <div class="tooltip">
+              <div class="tooltip-header"><img class="tooltip-thumb" src="mobo.png" alt="Motherboard" /><div class="tooltip-title">Motherboard</div></div>
+              <div class="tooltip-desc">Papan sirkuit induk yang menghubungkan CPU, memori, kartu grafis, dan seluruh perangkat keras dalam satu sistem terpadu.</div>
+            </div>
+          </div>
+
+          <!-- Power Supply (PSU) - FEATURED WITH DIRECT DISASSEMBLY ACCESS -->
+          <div id="hs-psu" class="hotspot hs-psu psu-featured" tabindex="0" role="button" aria-label="Power Supply Unit (PSU)"
+            data-title="Power Supply Unit (PSU)"
+            data-desc="Jantung daya PC yang mengubah listrik PLN 220V AC menjadi DC stabil (+12V, +5V, +3.3V). Klik tombol di bawah untuk membongkar visual komponen dalamnya!"
+            data-img="power suplay.png"
+            data-is-psu="true">
+            <div class="tooltip">
+              <div class="tooltip-header">
+                <img class="tooltip-thumb" src="power suplay.png" alt="PSU" />
+                <div>
+                  <div class="tooltip-title" style="color: #fbbf24;">Power Supply (PSU)</div>
+                  <span style="font-size: 10px; color: #fbbf24; font-weight: 700;">★ KLIK UNTUK MEMBONGKAR</span>
+                </div>
+              </div>
+              <div class="tooltip-desc">Penyuplai daya utama komputer. Klik untuk melihat gambar real dan visual anatomi internal yang dibongkar!</div>
+            </div>
+          </div>
+
+          <!-- Storage Bracket / Bay -->
+          <div id="hs-ssd-bracket" class="hotspot hs-ssd-bracket" tabindex="0" role="button" aria-label="Storage Bracket / Bay"
+            data-title="Storage Bracket / Bay"
+            data-desc="Dudukan khusus untuk mengunci dan memasang drive penyimpanan tambahan seperti hard drive (HDD) atau SSD 2.5 inci."
+            data-img="">
+            <div class="tooltip">
+              <div class="tooltip-header"><div class="tooltip-title">Storage Bracket / Bay</div></div>
+              <div class="tooltip-desc">Dudukan khusus untuk mengunci dan memasang drive penyimpanan tambahan seperti hard drive (HDD) atau SSD 2.5 inci.</div>
+            </div>
+          </div>
+
+          <!-- Front Cover / Bezel -->
+          <div id="hs-frontcover" class="hotspot hs-frontcover hs-align-right" tabindex="0" role="button" aria-label="Front Cover / Bezel"
+            data-title="Front Cover / Bezel"
+            data-desc="Bagian muka casing tempat udara segar masuk (mesh intake) serta pelindung filter debu depan."
+            data-img="">
+            <div class="tooltip">
+              <div class="tooltip-header"><div class="tooltip-title">Front Cover / Bezel</div></div>
+              <div class="tooltip-desc">Bagian muka casing tempat udara segar masuk (mesh intake) serta pelindung filter debu depan.</div>
+            </div>
+          </div>
+
+          <!-- Back Panel / Chassis Frame -->
+          <div id="hs-back-panel" class="hotspot hs-back-panel hs-align-right" tabindex="0" role="button" aria-label="Back Panel / Chassis Frame"
+            data-title="Back Panel / Chassis Frame"
+            data-desc="Panel belakang sasis tempat port I/O motherboard terhubung ke monitor, keyboard, mouse, serta ventilasi pembuangan panas."
+            data-img="">
+            <div class="tooltip">
+              <div class="tooltip-header"><div class="tooltip-title">Back Panel / Chassis Frame</div></div>
+              <div class="tooltip-desc">Panel belakang sasis tempat port I/O motherboard terhubung ke monitor, keyboard, mouse, serta ventilasi pembuangan panas.</div>
+            </div>
           </div>
         </div>
 
-        <!-- Case Fan -->
-        <div id="hs-case-fan" class="hotspot hs-case-fan hs-align-left" tabindex="0" role="button" aria-label="Case Fan"
-          data-title="Case Fan"
-          data-desc="Kipas sirkulasi casing untuk meniup udara dingin ke dalam (intake) dan membuang udara panas keluar (exhaust)."
-          data-img="van.png">
-          <div class="tooltip">
-            <div class="tooltip-header">
-              <img class="tooltip-thumb" src="van.png" alt="Case Fan" />
-              <div class="tooltip-title">Case Fan</div>
-            </div>
-            <div class="tooltip-desc">Kipas sirkulasi casing untuk meniup udara dingin ke dalam (intake) dan membuang udara panas keluar (exhaust).</div>
-          </div>
+        <div id="mainOverlay" class="overlay"></div>
+      </div>
+
+      <!-- KONTEN & PANEL INFO PC -->
+      <div id="mainContent" class="content">
+        <div id="headerContainer" class="header-text">
+          <h1 id="titleHeader">Anatomi Hardware PC</h1>
+          <p id="descHeader" class="header-subtitle">Arahkan kursor atau pilih penanda komponen untuk membaca penjelasan singkatnya</p>
         </div>
 
-        <!-- CPU Air Cooler -->
-        <div id="hs-cooler" class="hotspot hs-cooler" tabindex="0" role="button" aria-label="CPU Air Cooler"
-          data-title="CPU Air Cooler"
-          data-desc="Pendingin dengan pipa tembaga (heatpipes) dan kipas yang menyerap serta membuang panas dari prosesor secara efisien."
-          data-img="van.png">
-          <div class="tooltip">
-            <div class="tooltip-header">
-              <img class="tooltip-thumb" src="van.png" alt="CPU Air Cooler" />
-              <div class="tooltip-title">CPU Air Cooler</div>
+        <!-- Panel Info Komponen di Bawah Layar -->
+        <div class="bottom-info-wrapper">
+          <div id="infoCard" class="info-card">
+            <img id="infoCardMedia" class="info-card-media" src="cpu.png" alt="Komponen" />
+            <div class="info-card-text">
+              <div id="infoCardBadge" class="info-card-badge">Detail Komponen</div>
+              <div id="infoCardTitle" class="info-card-title">Arahkan ke Titik Komponen</div>
+              <div id="infoCardDesc" class="info-card-desc">Sorot atau klik penanda biru toska pada gambar PC untuk melihat nama, gambar, dan fungsi penjelasannya.</div>
             </div>
-            <div class="tooltip-desc">Pendingin dengan pipa tembaga (heatpipes) dan kipas yang menyerap serta membuang panas dari prosesor secara efisien.</div>
-          </div>
-        </div>
-
-        <!-- Sleeved Cable -->
-        <div id="hs-cable" class="hotspot hs-cable" tabindex="0" role="button" aria-label="Sleeved Cable"
-          data-title="Sleeved Cable"
-          data-desc="Kabel daya berpelindung anyaman rapi untuk suplai arus listrik yang aman, rapi, dan estetis di dalam casing."
-          data-img="">
-          <div class="tooltip">
-            <div class="tooltip-header">
-              <div class="tooltip-title">Sleeved Cable</div>
+            <div id="infoCardAction" class="info-card-action" style="display: none;">
+              <button id="btnOpenPSUExplorer" class="btn-cta-psu" type="button">
+                ⚡ Bedah Visual PSU &rarr;
+              </button>
             </div>
-            <div class="tooltip-desc">Kabel daya berpelindung anyaman rapi untuk suplai arus listrik yang aman, rapi, dan estetis di dalam casing.</div>
-          </div>
-        </div>
-
-        <!-- Processor (CPU) -->
-        <div id="hs-cpu" class="hotspot hs-cpu" tabindex="0" role="button" aria-label="Processor (CPU)"
-          data-title="Processor (CPU)"
-          data-desc="Otak utama komputer yang mengendalikan seluruh sistem dan mengeksekusi semua instruksi komputasi secara presisi."
-          data-img="cpu.png">
-          <div class="tooltip">
-            <div class="tooltip-header">
-              <img class="tooltip-thumb" src="cpu.png" alt="CPU" />
-              <div class="tooltip-title">Processor (CPU)</div>
-            </div>
-            <div class="tooltip-desc">Otak utama komputer yang mengendalikan seluruh sistem dan mengeksekusi semua instruksi komputasi secara presisi.</div>
-          </div>
-        </div>
-
-        <!-- RAM Memory -->
-        <div id="hs-ram" class="hotspot hs-ram" tabindex="0" role="button" aria-label="RAM Memory"
-          data-title="RAM Memory"
-          data-desc="Memori akses acak berkecepatan tinggi yang menyimpan data aktif sementara agar dapat diproses kilat oleh prosesor."
-          data-img="ram.png">
-          <div class="tooltip">
-            <div class="tooltip-header">
-              <img class="tooltip-thumb" src="ram.png" alt="RAM" />
-              <div class="tooltip-title">RAM Memory</div>
-            </div>
-            <div class="tooltip-desc">Memori akses acak berkecepatan tinggi yang menyimpan data aktif sementara agar dapat diproses kilat oleh prosesor.</div>
-          </div>
-        </div>
-
-        <!-- M.2 NVMe SSD -->
-        <div id="hs-nvme" class="hotspot hs-nvme" tabindex="0" role="button" aria-label="M.2 NVMe SSD"
-          data-title="M.2 NVMe SSD"
-          data-desc="Media penyimpanan generasi modern berkecepatan ultra tinggi untuk booting sistem operasi dan pemuatan file super cepat."
-          data-img="memory card.png">
-          <div class="tooltip">
-            <div class="tooltip-header">
-              <img class="tooltip-thumb" src="memory card.png" alt="SSD" />
-              <div class="tooltip-title">M.2 NVMe SSD</div>
-            </div>
-            <div class="tooltip-desc">Media penyimpanan generasi modern berkecepatan ultra tinggi untuk booting sistem operasi dan pemuatan file super cepat.</div>
-          </div>
-        </div>
-
-        <!-- Graphics Card (GPU) -->
-        <div id="hs-gpu" class="hotspot hs-gpu" tabindex="0" role="button" aria-label="Graphics Card (GPU)"
-          data-title="Graphics Card (GPU)"
-          data-desc="Kartu grafis khusus pengolah visual, grafis 3D, rendering video, dan akselerasi komputasi visual ke monitor."
-          data-img="">
-          <div class="tooltip">
-            <div class="tooltip-header">
-              <div class="tooltip-title">Graphics Card (GPU)</div>
-            </div>
-            <div class="tooltip-desc">Kartu grafis khusus pengolah visual, grafis 3D, rendering video, dan akselerasi komputasi visual ke monitor.</div>
-          </div>
-        </div>
-
-        <!-- Expansion Cards / LAN -->
-        <div id="hs-pcie-cards" class="hotspot hs-pcie-cards" tabindex="0" role="button" aria-label="Expansion Cards / LAN"
-          data-title="Expansion Cards / LAN"
-          data-desc="Kartu ekspansi tambahan pada slot PCIe (seperti Network LAN Card atau Sound Card) guna memperluas konektivitas PC."
-          data-img="network card.png">
-          <div class="tooltip">
-            <div class="tooltip-header">
-              <img class="tooltip-thumb" src="network card.png" alt="Network Card" />
-              <div class="tooltip-title">Expansion Cards / LAN</div>
-            </div>
-            <div class="tooltip-desc">Kartu ekspansi tambahan pada slot PCIe (seperti Network LAN Card atau Sound Card) guna memperluas konektivitas PC.</div>
-          </div>
-        </div>
-
-        <!-- PC Case / Chassis -->
-        <div id="hs-casing" class="hotspot hs-casing" tabindex="0" role="button" aria-label="PC Case / Chassis"
-          data-title="PC Case / Chassis"
-          data-desc="Rangka utama penopang seluruh hardware komputer yang menjaga posisi komponen tetap aman serta mengatur arah aliran udara."
-          data-img="">
-          <div class="tooltip">
-            <div class="tooltip-header">
-              <div class="tooltip-title">PC Case / Chassis</div>
-            </div>
-            <div class="tooltip-desc">Rangka utama penopang seluruh hardware komputer yang menjaga posisi komponen tetap aman serta mengatur arah aliran udara.</div>
-          </div>
-        </div>
-
-        <!-- Motherboard -->
-        <div id="hs-mobo" class="hotspot hs-mobo" tabindex="0" role="button" aria-label="Motherboard"
-          data-title="Motherboard"
-          data-desc="Papan sirkuit induk yang menghubungkan CPU, memori, kartu grafis, dan seluruh perangkat keras dalam satu sistem terpadu."
-          data-img="mobo.png">
-          <div class="tooltip">
-            <div class="tooltip-header">
-              <img class="tooltip-thumb" src="mobo.png" alt="Motherboard" />
-              <div class="tooltip-title">Motherboard</div>
-            </div>
-            <div class="tooltip-desc">Papan sirkuit induk yang menghubungkan CPU, memori, kartu grafis, dan seluruh perangkat keras dalam satu sistem terpadu.</div>
-          </div>
-        </div>
-
-        <!-- Power Supply (PSU) -->
-        <div id="hs-psu" class="hotspot hs-psu" tabindex="0" role="button" aria-label="Power Supply (PSU)"
-          data-title="Power Supply (PSU)"
-          data-desc="Penyuplai daya listrik yang mengubah arus AC tegangan tinggi PLN menjadi arus DC bertegangan stabil untuk tiap komponen."
-          data-img="power suplay.png">
-          <div class="tooltip">
-            <div class="tooltip-header">
-              <img class="tooltip-thumb" src="power suplay.png" alt="PSU" />
-              <div class="tooltip-title">Power Supply (PSU)</div>
-            </div>
-            <div class="tooltip-desc">Penyuplai daya listrik yang mengubah arus AC tegangan tinggi PLN menjadi arus DC bertegangan stabil untuk tiap komponen.</div>
-          </div>
-        </div>
-
-        <!-- Storage Bracket / Bay -->
-        <div id="hs-ssd-bracket" class="hotspot hs-ssd-bracket" tabindex="0" role="button" aria-label="Storage Bracket / Bay"
-          data-title="Storage Bracket / Bay"
-          data-desc="Dudukan khusus untuk mengunci dan memasang drive penyimpanan tambahan seperti hard drive (HDD) atau SSD 2.5 inci."
-          data-img="">
-          <div class="tooltip">
-            <div class="tooltip-header">
-              <div class="tooltip-title">Storage Bracket / Bay</div>
-            </div>
-            <div class="tooltip-desc">Dudukan khusus untuk mengunci dan memasang drive penyimpanan tambahan seperti hard drive (HDD) atau SSD 2.5 inci.</div>
-          </div>
-        </div>
-
-        <!-- Front Cover / Bezel -->
-        <div id="hs-frontcover" class="hotspot hs-frontcover hs-align-right" tabindex="0" role="button" aria-label="Front Cover / Bezel"
-          data-title="Front Cover / Bezel"
-          data-desc="Bagian muka casing tempat udara segar masuk (mesh intake) serta pelindung filter debu depan."
-          data-img="">
-          <div class="tooltip">
-            <div class="tooltip-header">
-              <div class="tooltip-title">Front Cover / Bezel</div>
-            </div>
-            <div class="tooltip-desc">Bagian muka casing tempat udara segar masuk (mesh intake) serta pelindung filter debu depan.</div>
-          </div>
-        </div>
-
-        <!-- Back Panel / Chassis Frame -->
-        <div id="hs-back-panel" class="hotspot hs-back-panel hs-align-right" tabindex="0" role="button" aria-label="Back Panel / Chassis Frame"
-          data-title="Back Panel / Chassis Frame"
-          data-desc="Panel belakang sasis tempat port I/O motherboard terhubung ke monitor, keyboard, mouse, serta ventilasi pembuangan panas."
-          data-img="">
-          <div class="tooltip">
-            <div class="tooltip-header">
-              <div class="tooltip-title">Back Panel / Chassis Frame</div>
-            </div>
-            <div class="tooltip-desc">Panel belakang sasis tempat port I/O motherboard terhubung ke monitor, keyboard, mouse, serta ventilasi pembuangan panas.</div>
           </div>
         </div>
       </div>
+    </main>
 
-      <!-- Overlay -->
-      <div id="mainOverlay" class="overlay"></div>
-    </div>
+    <!-- ========================================================== -->
+    <!-- VIEW 2: BEDAH ANATOMI & VISUAL DIBONGKAR PSU              -->
+    <!-- ========================================================== -->
+    <section id="viewPSU" class="app-view">
+      <div class="psu-workspace">
+        <!-- Safety Alert Banner -->
+        <div class="safety-banner">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <div>
+            <strong>PERINGATAN TEKNIS:</strong> Kapasitor primer menyimpan tegangan tinggi (~400V DC) yang mematikan. Jangan membongkar PSU fisik secara sembarangan!
+          </div>
+        </div>
 
-    <!-- KONTEN -->
-    <div id="mainContent" class="content">
-      <div id="headerContainer" class="header-text">
-        <h1 id="titleHeader">Anatomi Hardware PC</h1>
-        <p id="descHeader" class="header-subtitle">Arahkan kursor atau pilih titik komponen untuk membaca penjelasan singkatnya</p>
-      </div>
+        <!-- PSU Sub-Toolbar -->
+        <div class="psu-toolbar">
+          <div class="psu-title-group">
+            <h2>Bedah Anatomi Power Supply Unit</h2>
+            <span class="badge-spec">850W ATX 3.0 &bull; 80+ Gold</span>
+          </div>
 
-      <!-- Panel Info Komponen di Bawah Layar -->
-      <div class="bottom-info-wrapper">
-        <div id="infoCard" class="info-card">
-          <img id="infoCardMedia" class="info-card-media" src="cpu.png" alt="Komponen" />
-          <div class="info-card-text">
-            <div class="info-card-badge">Detail Komponen</div>
-            <div id="infoCardTitle" class="info-card-title">Arahkan ke Titik Komponen</div>
-            <div id="infoCardDesc" class="info-card-desc">Sorot atau klik penanda biru toska pada gambar PC untuk melihat nama, gambar, dan fungsi penjelasannya.</div>
+          <!-- View Mode Toggles -->
+          <div class="view-mode-selector" role="radiogroup" aria-label="Mode Visual PSU">
+            <button id="modeBtnReal" class="mode-btn" type="button" data-mode="real">
+              📦 Tampilan Real (Rakit)
+            </button>
+            <button id="modeBtnExploded" class="mode-btn gold active" type="button" data-mode="exploded">
+              💥 Tampilan Dibongkar (Terurai)
+            </button>
+            <button id="modeBtnInternal" class="mode-btn" type="button" data-mode="internal">
+              🔬 Sirkuit Internal PCB
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Komponen Berdasarkan Tahap Aliran Listrik -->
+        <div class="psu-filter-strip">
+          <span class="filter-label">Filter Tahap:</span>
+          <button class="filter-chip active" type="button" data-stage="all">Semua Komponen</button>
+          <button class="filter-chip" type="button" data-stage="input">1. Masukan & Filter EMI</button>
+          <button class="filter-chip" type="button" data-stage="primary">2. Sirkuit Primer & PFC (~400V)</button>
+          <button class="filter-chip" type="button" data-stage="transform">3. Trafo & Konversi Sekunder</button>
+          <button class="filter-chip" type="button" data-stage="output">4. Output DC & Proteksi (+12V/5V/3.3V)</button>
+        </div>
+
+        <!-- Main Visual Stage Viewport -->
+        <div class="psu-stage-viewport">
+          <div class="blueprint-grid"></div>
+
+          <div class="viewport-frame">
+            <!-- LAYER 1: Tampilan Real Assembled PSU -->
+            <img id="imgPsuReal" class="psu-visual-layer" src="psu_assembled.jpg" alt="Tampilan Real Rakitan PSU PC" />
+
+            <!-- LAYER 2: Tampilan Terurai / Exploded Disassembled PSU -->
+            <img id="imgPsuExploded" class="psu-visual-layer active" src="psu_exploded.jpg" alt="Tampilan Visual Dibongkar / Exploded View PSU" />
+
+            <!-- LAYER 3: Tampilan Sirkuit Internal PCB Top-Down -->
+            <img id="imgPsuInternal" class="psu-visual-layer" src="psu_internal.jpg" alt="Tampilan Sirkuit Internal PCB Komponen PSU" />
+
+            <!-- ============================================== -->
+            <!-- HOTSPOTS: EXPLODED VIEW (TAMPILAN DIBONGKAR)    -->
+            <!-- ============================================== -->
+            <div id="hotspotsExploded" class="psu-hotspots-group active">
+              <!-- 01: Top Casing & Kipas Pendingin -->
+              <div class="psu-pin" style="top: 18%; left: 49%;" tabindex="0" role="button" data-id="fan-casing" data-stage="output">
+                <div class="pin-body">01</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Tutup Atas & Kipas Pendingin (Fan)</div>
+              </div>
+
+              <!-- 02: Tahap Filter Transien EMI -->
+              <div class="psu-pin pin-flip-left" style="top: 40%; left: 24%;" tabindex="0" role="button" data-id="emi-filter" data-stage="input">
+                <div class="pin-body">02</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Filter Transien EMI (X/Y Cap & Choke)</div>
+              </div>
+
+              <!-- 03: Bridge Rectifier (Penyearah Dioda Jembatan) -->
+              <div class="psu-pin pin-flip-left" style="top: 49%; left: 30%;" tabindex="0" role="button" data-id="bridge-rectifier" data-stage="input">
+                <div class="pin-body">03</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Bridge Rectifier (Penyearah AC-DC)</div>
+              </div>
+
+              <!-- 04: Induktor Active PFC -->
+              <div class="psu-pin pin-flip-left" style="top: 61%; left: 33%;" tabindex="0" role="button" data-id="active-pfc" data-stage="primary">
+                <div class="pin-body">04</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Active PFC Inductor (Faktor Daya)</div>
+              </div>
+
+              <!-- 05: Kapasitor Utama Tegangan Tinggi (Bulk Primary Caps) -->
+              <div class="psu-pin gold" style="top: 36%; left: 66%;" tabindex="0" role="button" data-id="bulk-cap" data-stage="primary">
+                <div class="pin-body">05</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Kapasitor Primer Jepang 450V 105°C</div>
+              </div>
+
+              <!-- 06: Heatsink & Transistor Switching MOSFET Primer -->
+              <div class="psu-pin" style="top: 44%; left: 47%;" tabindex="0" role="button" data-id="mosfet-heatsink" data-stage="primary">
+                <div class="pin-body">06</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Heatsink & MOSFET Switching</div>
+              </div>
+
+              <!-- 07: Trafo Frekuensi Tinggi (Main Transformer) -->
+              <div class="psu-pin gold" style="top: 53%; left: 51%;" tabindex="0" role="button" data-id="main-transformer" data-stage="transform">
+                <div class="pin-body">07</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Transformator Utama (High-Frequency)</div>
+              </div>
+
+              <!-- 08: Penyearah Sekunder +12V -->
+              <div class="psu-pin" style="top: 47%; left: 74%;" tabindex="0" role="button" data-id="secondary-rectifier" data-stage="transform">
+                <div class="pin-body">08</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Penyearah Sekunder (+12V Rail)</div>
+              </div>
+
+              <!-- 09: Anak Papan Modul DC-to-DC (+5V & +3.3V) -->
+              <div class="psu-pin" style="top: 59%; left: 76%;" tabindex="0" role="button" data-id="dc-dc-module" data-stage="output">
+                <div class="pin-body">09</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Modul DC-to-DC (+5V & +3.3V)</div>
+              </div>
+
+              <!-- 10: IC Pengawas Proteksi (Supervisor IC) -->
+              <div class="psu-pin" style="top: 65%; left: 56%;" tabindex="0" role="button" data-id="protection-ic" data-stage="output">
+                <div class="pin-body">10</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">IC Proteksi (OVP, OCP, SCP, OTP)</div>
+              </div>
+
+              <!-- 11: Papan Soket Modular PCB -->
+              <div class="psu-pin" style="top: 74%; left: 42%;" tabindex="0" role="button" data-id="modular-board" data-stage="output">
+                <div class="pin-body">11</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Papan Distribusi Kabel Modular</div>
+              </div>
+
+              <!-- 12: Sasis Plat Bawah Casing -->
+              <div class="psu-pin" style="top: 83%; left: 53%;" tabindex="0" role="button" data-id="bottom-chassis" data-stage="output">
+                <div class="pin-body">12</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Sasis Pelindung Bawah & Grounding</div>
+              </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- HOTSPOTS: REAL ASSEMBLED VIEW (TAMPILAN REAL)  -->
+            <!-- ============================================== -->
+            <div id="hotspotsReal" class="psu-hotspots-group">
+              <!-- R01: 120mm Silent Cooling Fan & Grill -->
+              <div class="psu-pin" style="top: 36%; left: 48%;" tabindex="0" role="button" data-id="real-fan" data-stage="output">
+                <div class="pin-body">01</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Kipas 120mm Fluid Dynamic Bearing</div>
+              </div>
+
+              <!-- R02: Full Modular Connector Panel -->
+              <div class="psu-pin" style="top: 52%; left: 78%;" tabindex="0" role="button" data-id="real-modular" data-stage="output">
+                <div class="pin-body">02</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Panel Soket Full Modular</div>
+              </div>
+
+              <!-- R03: Colokan Listrik AC & Sakelar I/O -->
+              <div class="psu-pin pin-flip-left" style="top: 48%; left: 22%;" tabindex="0" role="button" data-id="real-ac-socket" data-stage="input">
+                <div class="pin-body">03</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Colokan AC 220V & Sakelar Daya</div>
+              </div>
+
+              <!-- R04: Ventilasi Honeycomb Exhaust -->
+              <div class="psu-pin pin-flip-left" style="top: 42%; left: 16%;" tabindex="0" role="button" data-id="real-mesh" data-stage="output">
+                <div class="pin-body">04</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Ventilasi Honeycomb Pembuangan Panas</div>
+              </div>
+
+              <!-- R05: Label Rating Daya & Sertifikasi 80 Plus Gold -->
+              <div class="psu-pin gold" style="top: 68%; left: 38%;" tabindex="0" role="button" data-id="real-label" data-stage="primary">
+                <div class="pin-body">05</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Label Daya & Sertifikasi 80+ Gold</div>
+              </div>
+
+              <!-- R06: Sakelar Zero-RPM / Hybrid Fan Switch -->
+              <div class="psu-pin pin-flip-left" style="top: 56%; left: 26%;" tabindex="0" role="button" data-id="real-hybrid" data-stage="output">
+                <div class="pin-body">06</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Tombol Mode Eco / Zero-RPM Fan</div>
+              </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- HOTSPOTS: INTERNAL PCB CLOSE-UP VIEW           -->
+            <!-- ============================================== -->
+            <div id="hotspotsInternal" class="psu-hotspots-group">
+              <!-- I01: EMI Stage Filter AC -->
+              <div class="psu-pin pin-flip-left" style="top: 32%; left: 18%;" tabindex="0" role="button" data-id="emi-filter" data-stage="input">
+                <div class="pin-body">01</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Tahap Filter EMI (X/Y Cap, Choke, Fuse)</div>
+              </div>
+
+              <!-- I02: Penyearah Bridge Rectifier -->
+              <div class="psu-pin pin-flip-left" style="top: 45%; left: 28%;" tabindex="0" role="button" data-id="bridge-rectifier" data-stage="input">
+                <div class="pin-body">02</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Bridge Rectifier pada Heatsink</div>
+              </div>
+
+              <!-- I03: Active PFC Choke Coil -->
+              <div class="psu-pin pin-flip-left" style="top: 64%; left: 29%;" tabindex="0" role="button" data-id="active-pfc" data-stage="primary">
+                <div class="pin-body">03</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Koil Toroid Active PFC</div>
+              </div>
+
+              <!-- I04: Kapasitor Utama 450V 105C -->
+              <div class="psu-pin gold" style="top: 40%; left: 43%;" tabindex="0" role="button" data-id="bulk-cap" data-stage="primary">
+                <div class="pin-body">04</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Kapasitor Primer Jepang 105°C</div>
+              </div>
+
+              <!-- I05: Heatsink & Transistor Switching Primer -->
+              <div class="psu-pin" style="top: 31%; left: 54%;" tabindex="0" role="button" data-id="mosfet-heatsink" data-stage="primary">
+                <div class="pin-body">05</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Sirip Heatsink Aluminium Pendingin MOSFET</div>
+              </div>
+
+              <!-- I06: Trafo Utama Frekuensi Tinggi -->
+              <div class="psu-pin gold" style="top: 55%; left: 55%;" tabindex="0" role="button" data-id="main-transformer" data-stage="transform">
+                <div class="pin-body">06</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Trafo Utama Penurun Tegangan</div>
+              </div>
+
+              <!-- I07: Penyearah Sekunder +12V -->
+              <div class="psu-pin" style="top: 42%; left: 69%;" tabindex="0" role="button" data-id="secondary-rectifier" data-stage="transform">
+                <div class="pin-body">07</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Synchronous Rectification MOSFETs (+12V)</div>
+              </div>
+
+              <!-- I08: Modul Anak DC-to-DC -->
+              <div class="psu-pin" style="top: 66%; left: 74%;" tabindex="0" role="button" data-id="dc-dc-module" data-stage="output">
+                <div class="pin-body">08</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Papan DC-to-DC Converter (+5V & +3.3V)</div>
+              </div>
+
+              <!-- I09: Filter Kapasitor Solid Sekunder -->
+              <div class="psu-pin" style="top: 55%; left: 83%;" tabindex="0" role="button" data-id="modular-board" data-stage="output">
+                <div class="pin-body">09</div>
+                <div class="pin-pulse"></div>
+                <div class="pin-label-pill">Kapasitor Solid Penyaring Riak Output</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slider Bar Pembongkaran Aksis -->
+        <div class="psu-slider-strip">
+          <span class="slider-caption">📦 Rakit Utuh</span>
+          <input id="psuExplosionSlider" class="disassembly-range" type="range" min="0" max="2" value="1" step="1" title="Geser untuk mengubah tingkat pembongkaran visual PSU" />
+          <span class="slider-caption">💥 Visual Dibongkar / Terurai</span>
+        </div>
+
+        <!-- PSU Bottom Inspector Panel -->
+        <div id="psuInspector" class="psu-inspector-panel">
+          <div class="inspector-header">
+            <div class="inspector-meta">
+              <span id="inspectTag" class="inspector-tag gold">TAHAP TEGANGAN TINGGI</span>
+              <h3 id="inspectTitle" class="inspector-title">Kapasitor Utama Tegangan Tinggi (Bulk Primary Capacitors)</h3>
+            </div>
+            <span id="inspectVoltage" class="inspector-voltage">Tegangan Operasional: 400V - 450V DC</span>
+          </div>
+
+          <div class="inspector-grid">
+            <div class="col-fungsi">
+              <div class="inspector-col-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Fungsi Utama
+              </div>
+              <p id="inspectFungsi" class="inspector-desc-text">
+                Menyimpan muatan energi listrik DC bertegangan tinggi untuk menghaluskan tegangan riak dan menjaga kestabilan aliran daya (Hold-up time minimal 16-17 milidetik) jika listrik PLN berkedip.
+              </p>
+            </div>
+
+            <div class="col-cara-kerja">
+              <div class="inspector-col-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                Cara Kerja Elektronik
+              </div>
+              <p id="inspectCaraKerja" class="inspector-desc-text">
+                Menerima arus searah yang telah dikoreksi oleh sirkuit Active PFC, mengisi muatan ke lapisan dielektrik elektrolit, lalu menyalurkan energi secara kontinu ke transistor switching berkecepatan tinggi.
+              </p>
+            </div>
+
+            <div class="col-kerusakan">
+              <div class="inspector-col-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path></svg>
+                Gejala Kerusakan & Mutu
+              </div>
+              <p id="inspectKerusakan" class="inspector-desc-text">
+                Jika kembung atau bocor: PC sering mati/restart mendadak saat bermain game beban berat, atau timbul bunyi dengung frekuensi tinggi (coil whine). PSU berkualitas wajib memakai kapasitor Jepang bertingkat 105°C (seperti Nichicon, Rubycon, atau Nippon Chemi-Con).
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
+    <!-- JAVASCRIPT LOGIC -->
     <script>
+      /* ======================================================== */
+      /* WEB AUDIO SYNTHESIZER (NO EXTERNAL AUDIO FILES NEEDED)   */
+      /* ======================================================== */
+      let audioCtx = null;
+      let soundEnabled = true;
+
+      function getAudioContext() {
+        if (!audioCtx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) audioCtx = new AudioContext();
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        return audioCtx;
+      }
+
+      function playTone(freq, type = 'sine', duration = 0.08, volume = 0.15) {
+        if (!soundEnabled) return;
+        try {
+          const ctx = getAudioContext();
+          if (!ctx) return;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, ctx.currentTime);
+          gain.gain.setValueAtTime(volume, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start();
+          osc.stop(ctx.currentTime + duration);
+        } catch (e) {
+          // ignore audio failure
+        }
+      }
+
+      function playClickSound() { playTone(580, 'sine', 0.06, 0.12); }
+      function playHoverSound() { playTone(840, 'triangle', 0.04, 0.05); }
+      function playModeSound() {
+        playTone(440, 'sine', 0.06, 0.1);
+        setTimeout(() => playTone(880, 'sine', 0.1, 0.12), 60);
+      }
+
+      const btnSoundToggle = document.getElementById("btnSoundToggle");
+      if (btnSoundToggle) {
+        btnSoundToggle.addEventListener("click", () => {
+          soundEnabled = !soundEnabled;
+          btnSoundToggle.textContent = soundEnabled ? "🔊" : "🔇";
+          btnSoundToggle.title = soundEnabled ? "Suara: Aktif (Klik untuk Mematikan)" : "Suara: Senyap (Klik untuk Menyalakan)";
+          if (soundEnabled) playClickSound();
+        });
+      }
+
+      // Fullscreen toggle
+      const btnFullscreenToggle = document.getElementById("btnFullscreenToggle");
+      if (btnFullscreenToggle) {
+        btnFullscreenToggle.addEventListener("click", () => {
+          playClickSound();
+          if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(() => {});
+          } else {
+            document.exitFullscreen().catch(() => {});
+          }
+        });
+      }
+
+      /* ======================================================== */
+      /* GLOBAL NAVIGATION: MODE PC vs MODE BEDAH PSU             */
+      /* ======================================================== */
+      const navTabPC = document.getElementById("navTabPC");
+      const navTabPSU = document.getElementById("navTabPSU");
+      const viewPC = document.getElementById("viewPC");
+      const viewPSU = document.getElementById("viewPSU");
+      const btnOpenPSUExplorer = document.getElementById("btnOpenPSUExplorer");
+
+      function switchAppView(viewName) {
+        playModeSound();
+        if (viewName === 'psu') {
+          navTabPC.classList.remove("active");
+          navTabPSU.classList.add("active");
+          viewPC.classList.remove("active");
+          viewPSU.classList.add("active");
+        } else {
+          navTabPSU.classList.remove("active");
+          navTabPC.classList.add("active");
+          viewPSU.classList.remove("active");
+          viewPC.classList.add("active");
+        }
+      }
+
+      navTabPC.addEventListener("click", () => switchAppView('pc'));
+      navTabPSU.addEventListener("click", () => switchAppView('psu'));
+      if (btnOpenPSUExplorer) {
+        btnOpenPSUExplorer.addEventListener("click", () => switchAppView('psu'));
+      }
+
+      /* ======================================================== */
+      /* VIEW 1 (PC ANATOMY) LOGIC                                */
+      /* ======================================================== */
       const video = document.getElementById("backgroundVideo");
       const image = document.getElementById("backgroundImage");
       const hotspotContainer = document.getElementById("hotspotContainer");
@@ -733,6 +1722,8 @@
       const infoCardTitle = document.getElementById("infoCardTitle");
       const infoCardDesc = document.getElementById("infoCardDesc");
       const infoCardMedia = document.getElementById("infoCardMedia");
+      const infoCardBadge = document.getElementById("infoCardBadge");
+      const infoCardAction = document.getElementById("infoCardAction");
 
       let transitioned = false;
       function transitionToHotspots() {
@@ -748,29 +1739,33 @@
         }, 1200);
       }
 
-      video.addEventListener("ended", transitionToHotspots);
+      if (video) {
+        video.addEventListener("ended", transitionToHotspots);
+        video.addEventListener("click", transitionToHotspots);
+        video.addEventListener("error", transitionToHotspots);
+      }
       if (skipIntroBtn) {
         skipIntroBtn.addEventListener("click", transitionToHotspots);
       }
-
-      video.addEventListener("click", transitionToHotspots);
       window.addEventListener("keydown", (e) => {
         if (e.code === "Space" || e.code === "Enter") {
           transitionToHotspots();
         }
       });
-      video.addEventListener("error", transitionToHotspots);
 
-      // Interaktivitas Hotspot & Penjelasan Singkat
-      const hotspots = document.querySelectorAll(".hotspot");
+      const pcHotspots = document.querySelectorAll("#hotspotContainer .hotspot");
 
-      function updateActiveComponent(hotspot) {
+      function updateActivePCComponent(hotspot) {
+        playHoverSound();
         const title = hotspot.dataset.title;
         const desc = hotspot.dataset.desc;
         const img = hotspot.dataset.img;
+        const isPSU = hotspot.dataset.isPsu === "true";
 
         infoCardTitle.textContent = title;
         infoCardDesc.textContent = desc;
+        infoCardBadge.textContent = isPSU ? "Komponen Unggulan (Siap Dibongkar)" : "Detail Komponen";
+        infoCardBadge.style.color = isPSU ? "#fbbf24" : "#00ffcc";
 
         if (img) {
           infoCardMedia.src = img;
@@ -779,57 +1774,359 @@
           infoCardMedia.style.display = "none";
         }
 
+        if (isPSU) {
+          infoCardAction.style.display = "block";
+          infoCard.style.borderColor = "#fbbf24";
+        } else {
+          infoCardAction.style.display = "none";
+          infoCard.style.borderColor = "";
+        }
+
         infoCard.classList.add("highlight");
       }
 
-      function resetComponent() {
-        const activeHotspot = document.querySelector(".hotspot.active");
+      function resetPCComponent() {
+        const activeHotspot = document.querySelector("#hotspotContainer .hotspot.active");
         if (activeHotspot) {
-          updateActiveComponent(activeHotspot);
+          updateActivePCComponent(activeHotspot);
         } else {
           infoCard.classList.remove("highlight");
+          infoCard.style.borderColor = "";
+          infoCardBadge.textContent = "Detail Komponen";
+          infoCardBadge.style.color = "#00ffcc";
           infoCardTitle.textContent = "Arahkan ke Titik Komponen";
-          infoCardDesc.textContent = "Sorot atau klik penanda biru toska pada gambar PC untuk melihat nama, gambar, dan fungsi penjelasannya.";
+          infoCardDesc.textContent = "Sorot atau klik penanda pada gambar PC untuk melihat nama, gambar, dan fungsi penjelasannya.";
           infoCardMedia.src = "cpu.png";
           infoCardMedia.style.display = "block";
+          infoCardAction.style.display = "none";
         }
       }
 
-      hotspots.forEach((hs) => {
-        // Hover
-        hs.addEventListener("mouseenter", () => {
-          updateActiveComponent(hs);
-        });
-
-        hs.addEventListener("mouseleave", () => {
-          resetComponent();
-        });
-
-        // Click / Touch / Focus
+      pcHotspots.forEach((hs) => {
+        hs.addEventListener("mouseenter", () => updateActivePCComponent(hs));
+        hs.addEventListener("mouseleave", () => resetPCComponent());
         hs.addEventListener("click", (e) => {
           e.stopPropagation();
+          playClickSound();
           const wasActive = hs.classList.contains("active");
-          hotspots.forEach(h => h.classList.remove("active"));
+          pcHotspots.forEach(h => h.classList.remove("active"));
           if (!wasActive) {
             hs.classList.add("active");
-            updateActiveComponent(hs);
+            updateActivePCComponent(hs);
           } else {
-            resetComponent();
+            resetPCComponent();
           }
         });
+        hs.addEventListener("focus", () => updateActivePCComponent(hs));
+      });
 
-        hs.addEventListener("focus", () => {
-          updateActiveComponent(hs);
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest("#hotspotContainer .hotspot") && !e.target.closest("#infoCardAction")) {
+          pcHotspots.forEach(h => h.classList.remove("active"));
+          resetPCComponent();
+        }
+      });
+
+      /* ======================================================== */
+      /* VIEW 2 (BEDAH PSU VISUAL & DIBONGKAR) DATA & LOGIC       */
+      /* ======================================================== */
+      const psuComponentsData = {
+        "fan-casing": {
+          tag: "SISTEM PENDINGINAN & MEKANIKAL",
+          isGold: false,
+          voltage: "12V DC (PWM Controlled)",
+          title: "Tutup Atas Logam & Kipas Pendingin (120mm FDB Fan)",
+          fungsi: "Mengalirkan hembusan udara dingin secara langsung ke atas sirip heatsink aluminium tebal, induktor toroid, dan kapasitor agar suhu kerja PSU tetap berada di bawah 50°C.",
+          caraKerja: "Kipas menggunakan bantalan Fluid Dynamic Bearing (FDB) yang senyap dan tahan aus hingga 100.000 jam. Sensor termal di heatsink sekunder mengatur kecepatan putaran kipas secara otomatis via PWM.",
+          kerusakan: "Jika debu menumpuk atau kipas mati, panas berlebih akan menumpuk dalam 3-5 menit dan memicu proteksi OTP (Over Temperature Protection) sehingga PC mendadak mati total untuk mencegah kebakaran."
+        },
+        "emi-filter": {
+          tag: "TAHAP 1: MASUKAN LISTRIK & PROTEKSI",
+          isGold: false,
+          voltage: "220V - 240V AC (PLN)",
+          title: "Filter Transien EMI (X-Cap, Y-Cap, MOV & Choke Coil)",
+          fungsi: "Mencegah lonjakan voltase petir (surge) dari PLN masuk merusak komponen PC, serta menyaring derau frekuensi tinggi agar tidak bocor kembali mencemari instalasi listrik rumah.",
+          caraKerja: "Komponen MOV (Metal Oxide Varistor) menyerap lonjakan tegangan ekstrem; NTC thermistor meredam arus kejut (inrush current) saat pertama dinyalakan; kapasitor X & Y bersama kumparan choke menyaring kebisingan diferensial & common-mode.",
+          kerusakan: "Bila tersambar petir atau lonjakan voltase PLN parah, MOV dan sekring (fuse) kaca keramik akan meledak/putus mengorbankan dirinya demi melindungi sisa sirkuit PC."
+        },
+        "bridge-rectifier": {
+          tag: "TAHAP 1: PENYEARAH GELOMBANG PENUH",
+          isGold: false,
+          voltage: "220V AC ➔ 310V DC Berdenyut",
+          title: "Bridge Rectifier (Penyearah Dioda Jembatan pada Heatsink)",
+          fungsi: "Mengubah arus bolak-balik (AC) dari colokan PLN menjadi arus searah (DC) sebelum diteruskan ke sirkuit penguat Active PFC.",
+          caraKerja: "Menggunakan 4 buah dioda daya berkekuatan tinggi dalam satu paket logam terpadu yang disusun dalam topologi jembatan gelombang penuh (full-wave). Karena dialiri seluruh arus masuk, dioda ini menghasilkan panas dan dibaut kuat ke sirip heatsink aluminium.",
+          kerusakan: "Kerusakan korsleting internal pada bridge rectifier akan langsung menyebabkan listrik MCB rumah jepret seketika saat kabel PSU dicolokkan ke stopkontak."
+        },
+        "active-pfc": {
+          tag: "TAHAP 2: KOREKSI FAKTOR DAYA",
+          isGold: true,
+          voltage: "380V - 400V DC Konstan",
+          title: "Sirkuit Active PFC & Induktor Toroid Tembaga",
+          fungsi: "Mengoreksi faktor daya listrik mendekati ideal (>0.99 atau 99% efisiensi daya nyata) dan mendongkrak tegangan DC masuk menjadi stabil di kisaran 380V–400V DC.",
+          caraKerja: "IC pengontrol PFC mengatur switching frekuensi tinggi pada MOSFET daya dan induktor kawat tembaga toroid tebal, meminimalisir daya semu (VAR) yang terbuang dan membuat PSU kompatibel dengan tegangan universal (100V-240V auto-switching).",
+          kerusakan: "Induktor yang kendor lem resinnya dapat menimbulkan getaran magnetik berisik (coil whine melengking). Kerusakan MOSFET PFC menyebabkan PSU mati total tanpa ada daya standby 5VSB."
+        },
+        "bulk-cap": {
+          tag: "TAHAP 2: PENAMPUNG TEGANGAN TINGGI",
+          isGold: true,
+          voltage: "400V - 450V DC (BERBAHAYA!)",
+          title: "Kapasitor Utama Tegangan Tinggi (Bulk Primary Capacitors)",
+          fungsi: "Menyimpan muatan energi listrik DC bertegangan tinggi untuk meratakan tegangan riak dan menjaga waktu tahan (Hold-up time minimal 16-17ms) saat tegangan PLN berkedip sesaat.",
+          caraKerja: "Menerima tegangan 380V-400V dari Active PFC, mengisi muatan elektrolit berkapasitas besar (biasanya 470µF-680µF), dan menjadi penyedia arus instan bagi transistor switching primer.",
+          kerusakan: "Kapasitor kembung/bocor cairan elektrolit menyebabkan PC sering restart sendiri saat membuka aplikasi berat. PSU Tier A selalu menggunakan kapasitor Jepang bertingkat 105°C (Nichicon/Rubycon/Nippon Chemi-Con) bukan 85°C generik."
+        },
+        "mosfet-heatsink": {
+          tag: "TAHAP 2: SWITCHING FREKUENSI TINGGI",
+          isGold: false,
+          voltage: "400V DC ➔ Pulsa AC 100kHz+",
+          title: "Transistor Switching MOSFET Primer & Heatsink Tebal",
+          fungsi: "Mencacah arus DC 400V menjadi pulsa frekuensi sangat tinggi (di atas 100.000 denyut per detik), sehingga trafo dapat dibuat kecil namun mampu menyalurkan daya raksasa.",
+          caraKerja: "Bekerja berpasangan dalam topologi Half-Bridge atau Full-Bridge LLC Resonant converter. Gerbang gate MOSFET dikendalikan sinyal PWM presisi untuk efisiensi switching hingga di atas 92%.",
+          kerusakan: "Jika terjadi panas ekstrem atau lonjakan arus balik, MOSFET dapat meledak mengeluarkan percikan api dan bau hangus tajam, memicu proteksi korsleting total."
+        },
+        "main-transformer": {
+          tag: "TAHAP 3: ISOLASI GALVANIS & PENURUN TEGANGAN",
+          isGold: true,
+          voltage: "400V Pulsa ➔ +12V AC Sekunder",
+          title: "Transformator Frekuensi Tinggi (Main High-Frequency Transformer)",
+          fungsi: "Menurunkan tegangan tinggi berbahaya di sisi primer menjadi tegangan rendah yang aman bagi komponen komputer, sekaligus menyediakan isolasi galvanis penuh demi keselamatan pengguna.",
+          caraKerja: "Memanfaatkan induksi elektromagnetik melalui inti ferit padat dan lilitan kawat tembaga tebal berinsulasi tiga lapis (triple-insulated wire). Karena frekuensi kerjanya 100kHz+, ukuran trafo ini 10x lebih mungil dibanding trafo besi kuno 50Hz.",
+          kerusakan: "Trafo ini sangat awet dan jarang rusak fisik. Namun lilitan yang kendor dapat menyebabkan desis coil whine saat konsumsi daya VGA (GPU) naik turun mendadak."
+        },
+        "secondary-rectifier": {
+          tag: "TAHAP 3: PENYEARAH SINKRON SEKUNDER",
+          isGold: false,
+          voltage: "+12V DC Murni (Hingga 70 Ampere)",
+          title: "Penyearah Sekunder (+12V Synchronous Rectification)",
+          fungsi: "Mengubah gelombang sekunder dari trafo menjadi jalur daya utama +12V DC murni yang mengalirkan hampir 95% total daya komputer (untuk CPU dan Kartu Grafis RTX/Radeon).",
+          caraKerja: "PSU modern bersertifikasi 80 Plus Gold ke atas menggantikan dioda Schottky lama dengan deretan MOSFET berhambatan sangat rendah (RDS(on) miliohm). MOSFET ini disinkronkan membuka dan menutup tepat waktu untuk menghemat daya yang terbuang jadi panas.",
+          kerusakan: "Jika salah satu MOSFET sekunder jebol, tegangan +12V akan drop atau drop korslet ke ground sehingga lampu motherboard mati dan PSU menolak menyala (klik relay proteksi)."
+        },
+        "dc-dc-module": {
+          tag: "TAHAP 4: REGULASI TEGANGAN RENDAH",
+          isGold: false,
+          voltage: "+12V ➔ +5V dan +3.3V DC",
+          title: "Anak Papan Konverter DC-to-DC (+5V & +3.3V VRM)",
+          fungsi: "Menurunkan sebagian tegangan dari jalur utama +12V menjadi tegangan presisi +5V (untuk USB, SSD SATA) dan +3.3V (untuk chipset motherboard dan modul RAM).",
+          caraKerja: "Merupakan modul anak vertikal tersendiri (daughterboard) dengan controller buck converter dan induktor mini. Berbeda dari desain PSU murah tipe group-regulated yang tidak stabil saat beban timpang, topologi DC-to-DC modern menjaga regulasi voltase tetap ketat di bawah toleransi 1%.",
+          kerusakan: "Kerusakan modul DC-DC menyebabkan perangkat USB tidak terdeteksi, drive SSD korup, atau lampu motherboard menyala namun tombol power tidak merespons."
+        },
+        "protection-ic": {
+          tag: "SISTEM PENGAWAS KEAMANAN HARDWARE",
+          isGold: true,
+          voltage: "Multi-Rail Sensor Real-Time",
+          title: "IC Pengawas & Proteksi (Supervisor IC: OVP, OCP, SCP, OTP)",
+          fungsi: "Otak keselamatan digital yang memantau setiap jalur tegangan dan arus. Jika terjadi korsleting di motherboard atau VGA, IC ini mematikan suplai daya dalam hitungan milidetik sebelum hardware lain terbakar!",
+          caraKerja: "Mendeteksi secara terus-menerus: OVP (Over Voltage), UVP (Under Voltage), OCP (Over Current), SCP (Short Circuit), OPP (Over Power), dan OTP (Over Temperature). Jika ada nilai melewati batas aman, IC menarik sinyal 'Power Good' (PG) ke ground dan memutus arus daya.",
+          kerusakan: "IC proteksi yang terlalu sensitif dapat menyebabkan PSU mati mendadak saat kartu grafis modern mengalami lonjakan daya sesaat (transient power spikes). PSU ATX 3.0 modern dirancang mampu menahan spike hingga 200% daya nominal."
+        },
+        "modular-board": {
+          tag: "TAHAP 4: DISTRIBUSI OUTPUT KABEL",
+          isGold: false,
+          voltage: "Jalur Modular +12V, +5V, +3.3V, Ground",
+          title: "Papan Distribusi Soket Kabel Modular (Modular PCB)",
+          fungsi: "Menghubungkan jalur daya internal ke soket kabel modular yang dapat dilepas-pasang, sehingga manajemen kabel di dalam casing PC rapi dan aliran sirkulasi udara lebih lancar.",
+          caraKerja: "Dilengkapi lapisan tembaga ultra tebal (2oz copper PCB) dan jajaran kapasitor padat (solid polymer capacitors) tambahan di dekat soket untuk meredam riak kebisingan (ripple) hingga di bawah 20mV sebelum masuk ke motherboard dan VGA.",
+          kerusakan: "Memasang kabel modular dari merek PSU lain yang pin-out nya berbeda dapat membakar hard disk atau kartu grafis seketika karena susunan kabel 12V dan Ground tertukar!"
+        },
+        "bottom-chassis": {
+          tag: "STRUKTUR FISIK & KESELAMATAN GROUNDING",
+          isGold: false,
+          voltage: "Terhubung Langsung ke Ground PLN (0V)",
+          title: "Sasis Pelindung Bawah Baja & Jalur Pembumian (Grounding)",
+          fungsi: "Melindungi sirkuit internal dari benturan fisik, menyerap radiasi elektromagnetik (EMI shielding), dan menyalurkan arus bocor langsung ke arde/ground instalasi listrik demi keselamatan pengguna.",
+          caraKerja: "Terbuat dari plat baja galvanis tahan karat tebal dengan bantalan karet anti-getaran. Bagian grounding terhubung ke pin ketiga colokan AC PLN.",
+          kerusakan: "Jika instalasi listrik rumah Anda tidak memiliki jalur arde (ground), casing PC akan terasa menyetrum halus saat disentuh telapak tangan karena arus kapasitansi filter EMI."
+        },
+
+        /* DATA UNTUK TAMPILAN REAL */
+        "real-fan": {
+          tag: "KOMPONEN EKSTERNAL: SIKLUS UDARA",
+          isGold: false,
+          voltage: "12V PWM Silent Intake",
+          title: "Kipas Pendingin 120mm Fluid Dynamic Bearing (FDB)",
+          fungsi: "Menghirup udara segar dari bawah atau luar casing PC untuk mendinginkan komponen daya internal secara hening.",
+          caraKerja: "Bilah kipas aerodinamis dirancang meminimalisir turbulensi udara pada kisi sarang lebah pelindung.",
+          kerusakan: "Baling-baling kipas macet akibat debu dapat menyebabkan PSU overheat dalam 10-15 menit pemakaian intensif."
+        },
+        "real-modular": {
+          tag: "KOMPONEN EKSTERNAL: ANTARMUKA KABEL",
+          isGold: false,
+          voltage: "Konektor ATX 24p, CPU 8p, PCIe 8p/12V-2x6",
+          title: "Panel Soket Full Modular",
+          fungsi: "Memberikan keleluasaan memasang hanya kabel yang dibutuhkan, mengurangi tumpukan kabel berlebih di dalam casing PC.",
+          caraKerja: "Soket memiliki pengunci kait presisi dengan pin terminal berlapis emas untuk konduktivitas arus tinggi tanpa resistansi berlebih.",
+          kerusakan: "Kabel yang longgar atau tidak terdorong sampai berbunyi 'klik' dapat memicu titik panas (hotspot) dan melelehkan plastik soket konektor."
+        },
+        "real-ac-socket": {
+          tag: "KOMPONEN EKSTERNAL: INPUT DAYA UTAMA",
+          isGold: false,
+          voltage: "100V - 240V AC 50/60Hz Universal",
+          title: "Soket AC Receptacle & Sakelar Daya Rocker (I/O)",
+          fungsi: "Tempat menancapkan kabel colokan listrik PLN dan sakelar fisik pemutus total arus listrik ke dalam PSU.",
+          caraKerja: "Memiliki 3 pin terminal kuningan: Live (Fasa), Neutral (Netral), dan Earth (Arde/Ground). Sakelar I/O memutus kedua jalur L dan N saat dimatikan (posisi O).",
+          kerusakan: "Soket yang longgar atau kabel AC kualitas rendah dapat memercikkan bunga api kecil dan menyebabkan komputer sering mati tiba-tiba."
+        },
+        "real-mesh": {
+          tag: "KOMPONEN EKSTERNAL: PEMBUANGAN PANAS",
+          isGold: false,
+          voltage: "Exhaust Airflow Channel",
+          title: "Ventilasi Sarang Lebah (Honeycomb Exhaust Mesh)",
+          fungsi: "Membuang udara panas dari dalam PSU ke luar bagian belakang casing komputer dengan hambatan aerodinamis serendah mungkin.",
+          caraKerja: "Bentuk heksagonal memberikan rasio bukaan ventilasi paling luas (sekitar 75%) tanpa mengurangi kekakuan struktural plat baja sasis.",
+          kerusakan: "Jika ventilasi terhalang dinding atau tertutup debu tebal, panas akan terperangkap dan memperpendek usia komponen kapasitor."
+        },
+        "real-label": {
+          tag: "SPESIFIKASI DAYA & EFISIENSI",
+          isGold: true,
+          voltage: "Tabel Ampere & Wattage Rating",
+          title: "Label Sertifikasi 80 Plus Gold & Tabel Rel Daya",
+          fungsi: "Menampilkan sertifikasi efisiensi daya resmi (efisiensi >90% pada beban 50%) dan rincian kemampuan ampere pada tiap rel voltase (+12V, +5V, +3.3V).",
+          caraKerja: "PSU dengan rel tunggal (+12V Single Rail) menyalurkan hampir seluruh 850W daya murni pada jalur 12V (sekitar 70.8 Ampere) untuk mendukung kartu grafis generasi mutakhir.",
+          kerusakan: "Waspada terhadap PSU abal-abal yang mencantumkan daya puncak (Peak Power) palsu bukan daya kontinu (Continuous Power), yang rentan meledak saat beban tinggi!"
+        },
+        "real-hybrid": {
+          tag: "KONTROL EFISIENSI & KEBISINGAN",
+          isGold: false,
+          voltage: "Zero-RPM Smart Thermal Logic",
+          title: "Tombol Mode Cerdas Zero-RPM / Eco Fan",
+          fungsi: "Mengaktifkan mode hening total di mana kipas pendingin akan berhenti berputar sepenuhnya saat beban komputer di bawah 40% (seperti browsing atau mengetik).",
+          caraKerja: "Ketika beban PC melonjak di atas 300W atau suhu heatsink melewati 50°C, kontroler pintar akan memutar kipas secara perlahan dan halus tanpa lonjakan suara bising.",
+          kerusakan: "Bila dibiarkan dalam casing yang minim sirkulasi udara (hot box), mode Eco dapat membuat komponen internal bekerja pada suhu hangat lebih lama."
+        }
+      };
+
+      /* View Switching Logic Inside PSU Explorer */
+      const modeBtnReal = document.getElementById("modeBtnReal");
+      const modeBtnExploded = document.getElementById("modeBtnExploded");
+      const modeBtnInternal = document.getElementById("modeBtnInternal");
+
+      const imgPsuReal = document.getElementById("imgPsuReal");
+      const imgPsuExploded = document.getElementById("imgPsuExploded");
+      const imgPsuInternal = document.getElementById("imgPsuInternal");
+
+      const hotspotsReal = document.getElementById("hotspotsReal");
+      const hotspotsExploded = document.getElementById("hotspotsExploded");
+      const hotspotsInternal = document.getElementById("hotspotsInternal");
+
+      const psuExplosionSlider = document.getElementById("psuExplosionSlider");
+
+      function setPSUVisualMode(mode) {
+        playClickSound();
+        [modeBtnReal, modeBtnExploded, modeBtnInternal].forEach(b => b.classList.remove("active"));
+        [imgPsuReal, imgPsuExploded, imgPsuInternal].forEach(img => img.classList.remove("active"));
+        [hotspotsReal, hotspotsExploded, hotspotsInternal].forEach(grp => grp.classList.remove("active"));
+
+        if (mode === 'real') {
+          modeBtnReal.classList.add("active");
+          imgPsuReal.classList.add("active");
+          hotspotsReal.classList.add("active");
+          if (psuExplosionSlider) psuExplosionSlider.value = "0";
+          inspectComponentById("real-fan");
+        } else if (mode === 'internal') {
+          modeBtnInternal.classList.add("active");
+          imgPsuInternal.classList.add("active");
+          hotspotsInternal.classList.add("active");
+          if (psuExplosionSlider) psuExplosionSlider.value = "2";
+          inspectComponentById("main-transformer");
+        } else {
+          // exploded view
+          modeBtnExploded.classList.add("active");
+          imgPsuExploded.classList.add("active");
+          hotspotsExploded.classList.add("active");
+          if (psuExplosionSlider) psuExplosionSlider.value = "1";
+          inspectComponentById("bulk-cap");
+        }
+      }
+
+      modeBtnReal.addEventListener("click", () => setPSUVisualMode('real'));
+      modeBtnExploded.addEventListener("click", () => setPSUVisualMode('exploded'));
+      modeBtnInternal.addEventListener("click", () => setPSUVisualMode('internal'));
+
+      if (psuExplosionSlider) {
+        psuExplosionSlider.addEventListener("input", (e) => {
+          const val = e.target.value;
+          if (val === "0") setPSUVisualMode('real');
+          else if (val === "1") setPSUVisualMode('exploded');
+          else if (val === "2") setPSUVisualMode('internal');
+        });
+      }
+
+      /* Inspector Content Updater */
+      const inspectTag = document.getElementById("inspectTag");
+      const inspectTitle = document.getElementById("inspectTitle");
+      const inspectVoltage = document.getElementById("inspectVoltage");
+      const inspectFungsi = document.getElementById("inspectFungsi");
+      const inspectCaraKerja = document.getElementById("inspectCaraKerja");
+      const inspectKerusakan = document.getElementById("inspectKerusakan");
+
+      function inspectComponentById(id) {
+        const data = psuComponentsData[id];
+        if (!data) return;
+
+        inspectTag.textContent = data.tag;
+        if (data.isGold) {
+          inspectTag.classList.add("gold");
+        } else {
+          inspectTag.classList.remove("gold");
+        }
+
+        inspectTitle.textContent = data.title;
+        inspectVoltage.textContent = `Tegangan Operasional: ${data.voltage}`;
+        inspectFungsi.textContent = data.fungsi;
+        inspectCaraKerja.textContent = data.caraKerja;
+        inspectKerusakan.textContent = data.kerusakan;
+
+        // highlight active pin in DOM
+        document.querySelectorAll(".psu-pin").forEach(pin => {
+          if (pin.dataset.id === id) {
+            pin.classList.add("active");
+          } else {
+            pin.classList.remove("active");
+          }
+        });
+      }
+
+      // Hook click and hover events for all PSU pins
+      const allPsuPins = document.querySelectorAll(".psu-pin");
+      allPsuPins.forEach(pin => {
+        pin.addEventListener("mouseenter", () => {
+          playHoverSound();
+          const id = pin.dataset.id;
+          inspectComponentById(id);
+        });
+
+        pin.addEventListener("click", (e) => {
+          e.stopPropagation();
+          playClickSound();
+          const id = pin.dataset.id;
+          inspectComponentById(id);
         });
       });
 
-      // Klik sembarang tempat untuk menutup seleksi aktif
-      document.addEventListener("click", (e) => {
-        if (!e.target.closest(".hotspot")) {
-          hotspots.forEach(h => h.classList.remove("active"));
-          resetComponent();
-        }
+      /* Filter Chips Handler */
+      const filterChips = document.querySelectorAll(".filter-chip");
+      filterChips.forEach(chip => {
+        chip.addEventListener("click", () => {
+          playClickSound();
+          filterChips.forEach(c => c.classList.remove("active"));
+          chip.classList.add("active");
+
+          const stage = chip.dataset.stage;
+          allPsuPins.forEach(pin => {
+            const pinStage = pin.dataset.stage;
+            if (stage === "all" || pinStage === stage) {
+              pin.classList.remove("dimmed");
+            } else {
+              pin.classList.add("dimmed");
+            }
+          });
+        });
       });
+
+      // Default selection on load
+      inspectComponentById("bulk-cap");
     </script>
   </body>
 </html>

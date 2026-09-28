@@ -1,6 +1,6 @@
 {
   "name": "Pengenalan Komputer",
-  "description": "Media pembelajaran interaktif anatomi hardware PC.",
+  "description": "Media pembelajaran interaktif anatomi hardware PC dan bedah visual Power Supply Unit (PSU) yang dapat dibongkar secara terurai.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
