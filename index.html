@@ -604,20 +604,23 @@
         padding: 4px;
         border-radius: 10px;
         border: 1px solid rgba(0, 255, 204, 0.25);
+        overflow-x: auto;
+        max-width: 100%;
       }
 
       .mode-btn {
         background: transparent;
         border: none;
         color: #94a3b8;
-        padding: 6px 14px;
+        padding: 6px 12px;
         border-radius: 7px;
-        font-size: 12px;
+        font-size: 11.5px;
         font-weight: 600;
         cursor: pointer;
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 5px;
+        white-space: nowrap;
         transition: all 0.2s ease;
       }
 
@@ -1076,50 +1079,6 @@
         right: 40px;
       }
 
-      /* Disassembly Axis Range Slider Bar */
-      .psu-slider-strip {
-        height: 38px;
-        background: rgba(10, 16, 26, 0.8);
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 16px;
-        padding: 0 20px;
-      }
-
-      .slider-caption {
-        font-size: 11.5px;
-        font-weight: 600;
-        color: #94a3b8;
-      }
-
-      .disassembly-range {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 220px;
-        height: 6px;
-        background: #1e293b;
-        border-radius: 3px;
-        outline: none;
-        cursor: pointer;
-      }
-
-      .disassembly-range::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        background: var(--cyan-glow);
-        box-shadow: 0 0 10px rgba(0, 255, 204, 0.6);
-        cursor: pointer;
-        transition: transform 0.1s ease;
-      }
-      .disassembly-range::-webkit-slider-thumb:hover {
-        transform: scale(1.2);
-      }
-
       /* PSU Bottom Inspection Drawer / Card */
       .psu-inspector-panel {
         background: rgba(10, 16, 26, 0.95);
@@ -1210,38 +1169,11 @@
         color: #cbd5e1;
       }
 
-      /* Safety Alert Floating Banner */
-      .safety-banner {
-        position: absolute;
-        top: 70px;
-        right: 18px;
-        background: rgba(220, 38, 38, 0.15);
-        border: 1px solid rgba(239, 68, 68, 0.5);
-        border-radius: 8px;
-        padding: 8px 12px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        max-width: 380px;
-        backdrop-filter: blur(8px);
-        z-index: 20;
-        font-size: 11.5px;
-        color: #fca5a5;
-        line-height: 1.35;
-      }
-
-      .safety-banner strong {
-        color: #fee2e2;
-      }
-
       /* Responsive adjustments */
       @media (max-width: 860px) {
         .inspector-grid {
           grid-template-columns: 1fr;
           gap: 10px;
-        }
-        .safety-banner {
-          display: none;
         }
         .psu-inspector-panel {
           max-height: 250px;
@@ -1512,18 +1444,6 @@
     <!-- ========================================================== -->
     <section id="viewPSU" class="app-view">
       <div class="psu-workspace">
-        <!-- Safety Alert Banner -->
-        <div class="safety-banner">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-            <line x1="12" y1="9" x2="12" y2="13"></line>
-            <line x1="12" y1="17" x2="12.01" y2="17"></line>
-          </svg>
-          <div>
-            <strong>PERINGATAN TEKNIS:</strong> Kapasitor primer menyimpan tegangan tinggi (~400V DC) yang mematikan. Jangan membongkar PSU fisik secara sembarangan!
-          </div>
-        </div>
-
         <!-- PSU Sub-Toolbar -->
         <div class="psu-toolbar">
           <div class="psu-title-group">
@@ -1531,16 +1451,22 @@
             <span class="badge-spec">850W ATX 3.0 &bull; 80+ Gold</span>
           </div>
 
-          <!-- View Mode Toggles -->
+          <!-- View Mode Toggles (Samakan 5 Tahap Animasi Pembongkaran) -->
           <div class="view-mode-selector" role="radiogroup" aria-label="Mode Visual PSU">
-            <button id="modeBtnReal" class="mode-btn" type="button" data-mode="real">
-              📦 Tampilan Real (Rakit)
+            <button id="modeBtn0" class="mode-btn" type="button" data-step="0" title="Tahap 0: PSU Utuh Tertutup">
+              <span style="font-weight: 800;">0.</span> 📦 Utuh
             </button>
-            <button id="modeBtnExploded" class="mode-btn gold active" type="button" data-mode="exploded">
-              💥 Tampilan Dibongkar (Terurai)
+            <button id="modeBtn1" class="mode-btn" type="button" data-step="1" title="Tahap 1: Lepas Baut & Tutup Atas">
+              <span style="font-weight: 800;">1.</span> 🔩 Tutup & Kipas
             </button>
-            <button id="modeBtnInternal" class="mode-btn" type="button" data-mode="internal">
-              🔬 Sirkuit Internal PCB
+            <button id="modeBtn2" class="mode-btn" type="button" data-step="2" title="Tahap 2: Angkat Heatsink Pendingin">
+              <span style="font-weight: 800;">2.</span> ❄️ Heatsink
+            </button>
+            <button id="modeBtn3" class="mode-btn gold active" type="button" data-step="3" title="Tahap 3: Terurai Penuh (Exploded 3D View)">
+              <span style="font-weight: 800;">3.</span> 💥 Terurai 3D
+            </button>
+            <button id="modeBtn4" class="mode-btn" type="button" data-step="4" title="Tahap 4: Sirkuit Internal PCB">
+              <span style="font-weight: 800;">4.</span> 🔬 Sirkuit PCB
             </button>
           </div>
         </div>
@@ -1835,14 +1761,6 @@
               </div>
             </div>
           </div>
-        </div>
-
-        <!-- Slider Bar Pembongkaran Aksis (0 s/d 4) -->
-        <div class="psu-slider-strip">
-          <span class="slider-caption">📦 0: Utuh</span>
-          <input id="psuExplosionSlider" class="disassembly-range" type="range" min="0" max="4" value="3" step="1" title="Geser tuas untuk membongkar atau merakit PSU secara berurutan" />
-          <span class="slider-caption">💥 3: Terurai</span>
-          <span class="slider-caption">🔬 4: PCB</span>
         </div>
 
         <!-- PSU Bottom Inspector Panel -->
@@ -2312,9 +2230,13 @@
       /* ======================================================== */
       /* PSU DISASSEMBLY & ANIMATION ENGINE                       */
       /* ======================================================== */
-      const modeBtnReal = document.getElementById("modeBtnReal");
-      const modeBtnExploded = document.getElementById("modeBtnExploded");
-      const modeBtnInternal = document.getElementById("modeBtnInternal");
+      const topModeBtns = [
+        document.getElementById("modeBtn0"),
+        document.getElementById("modeBtn1"),
+        document.getElementById("modeBtn2"),
+        document.getElementById("modeBtn3"),
+        document.getElementById("modeBtn4")
+      ];
 
       const btnPlayDisassembly = document.getElementById("btnPlayDisassembly");
       const btnReassemble = document.getElementById("btnReassemble");
@@ -2345,7 +2267,6 @@
       const hudTitle = document.getElementById("hudTitle");
       const hudDesc = document.getElementById("hudDesc");
 
-      const psuExplosionSlider = document.getElementById("psuExplosionSlider");
       const speedBtns = document.querySelectorAll(".speed-btn");
 
       let currentStepIndex = 3; // default: exploded view
@@ -2443,13 +2364,13 @@
           }
         });
 
-        // Update Mode Buttons in Header
-        [modeBtnReal, modeBtnExploded, modeBtnInternal].forEach(b => {
-          if (b) b.classList.remove("active");
+        // Update Mode Buttons in Header (Samakan 5 tahap selaras dengan stepper bawah)
+        topModeBtns.forEach((btn, idx) => {
+          if (btn) {
+            if (idx === stepIdx) btn.classList.add("active");
+            else btn.classList.remove("active");
+          }
         });
-        if (stepIdx === 0 && modeBtnReal) modeBtnReal.classList.add("active");
-        else if (stepIdx === 3 && modeBtnExploded) modeBtnExploded.classList.add("active");
-        else if (stepIdx === 4 && modeBtnInternal) modeBtnInternal.classList.add("active");
 
         // Update HUD Narration
         if (hudStepBadge) {
@@ -2462,11 +2383,6 @@
         }
         if (hudTitle) hudTitle.textContent = info.title;
         if (hudDesc) hudDesc.textContent = info.desc;
-
-        // Update Slider
-        if (psuExplosionSlider) {
-          psuExplosionSlider.value = stepIdx.toString();
-        }
 
         // Play Sound
         if (info.sound) info.sound();
@@ -2575,24 +2491,12 @@
         });
       });
 
-      // View mode header buttons
-      if (modeBtnReal) {
-        modeBtnReal.addEventListener("click", () => setDisassemblyStep(0, true));
-      }
-      if (modeBtnExploded) {
-        modeBtnExploded.addEventListener("click", () => setDisassemblyStep(3, true));
-      }
-      if (modeBtnInternal) {
-        modeBtnInternal.addEventListener("click", () => setDisassemblyStep(4, true));
-      }
-
-      // Slider input
-      if (psuExplosionSlider) {
-        psuExplosionSlider.addEventListener("input", (e) => {
-          const val = parseInt(e.target.value, 10);
-          setDisassemblyStep(val, true);
-        });
-      }
+      // View mode header buttons (5 tombol tahap atas selaras 1-to-1)
+      topModeBtns.forEach((btn, idx) => {
+        if (btn) {
+          btn.addEventListener("click", () => setDisassemblyStep(idx, true));
+        }
+      });
 
       /* Inspector Content Updater */
       const inspectTag = document.getElementById("inspectTag");
